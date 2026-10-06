@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>观乎人文 · 化成天下｜2026 华北五省人文知识竞赛校内选拔赛</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+:root{
+  --paper:#F6F0E2;
+  --paper-2:#EFE6D0;
+  --ink:#2A241B;
+  --ink-2:#4A4033;
+  --ink-3:#7A6F5E;
+  --cinnabar:#B03A2E;
+  --cinnabar-deep:#8F2D23;
+  --cinnabar-soft:#D96C5B;
+  --jade:#3E5C4B;
+  --gold:#B8862B;
+  --gold-soft:#E3C87C;
+  --line:rgba(42,36,27,.14);
+  --ok:#3E7C4F;
+  --err:#B03A2E;
+  --shadow:0 10px 30px rgba(42,36,27,.10);
+  --serif:'Noto Serif SC', 'Songti SC', 'SimSun', 'STSong', serif;
+  --sans:'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', '微软雅黑', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 500px at 85% -5%, rgba(184,134,43,.10), transparent 60%),
+    radial-gradient(900px 420px at -10% 110%, rgba(62,92,75,.08), transparent 55%),
+    var(--paper);
+  min-height:100vh;
+  line-height:1.6;
+}
+::selection{background:var(--cinnabar);color:#fff}
+button{font-family:inherit;cursor:pointer}
+input{font-family:inherit}
+
+/* ===== 视图容器 ===== */
+.view{display:none;min-height:100vh}
+.view.active{display:block}
+.wrap{max-width:820px;margin:0 auto;padding:24px 20px 96px}
+
+/* ===== 欢迎页 ===== */
+.welcome-hero{text-align:center;padding:34px 0 10px}
+.kicker{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:13px;letter-spacing:.28em;color:var(--ink-3);
+  padding:6px 18px;border:1px solid var(--line);border-radius:999px;
+  background:rgba(255,255,255,.35);
+}
+.kicker::before,.kicker::after{content:"";width:18px;height:1px;background:var(--line)}
+.hero-title{
+  font-family:var(--serif);font-weight:900;
+  font-size:clamp(40px,9vw,64px);letter-spacing:.12em;
+  margin:26px 0 6px;color:var(--ink);line-height:1.25;
+}
+.hero-title .sub{display:block;font-size:clamp(17px,3.4vw,22px);font-weight:600;letter-spacing:.5em;color:var(--cinnabar);margin-top:10px}
+.hero-theme{
+  font-family:var(--serif);font-size:15px;letter-spacing:.42em;color:var(--ink-2);
+  margin:14px 0 8px;
+}
+.hero-rule{display:flex;align-items:center;justify-content:center;gap:14px;color:var(--ink-3);font-size:12px;letter-spacing:.2em}
+.hero-rule::before,.hero-rule::after{content:"";width:56px;height:1px;background:var(--line)}
+
+/* 印章 */
+.seal{width:118px;height:118px;margin:26px auto 6px;position:relative}
+.seal svg{width:100%;height:100%;display:block;filter:drop-shadow(0 3px 6px rgba(176,58,46,.28))}
+.seal-note{font-size:12px;color:var(--ink-3);letter-spacing:.12em;margin-top:6px}
+
+.panel{
+  background:rgba(255,255,255,.5);
+  border:1px solid var(--line);border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:26px 24px;margin-top:30px;
+}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;color:var(--ink-2);letter-spacing:.06em;margin-bottom:7px;font-weight:500}
+.field input{
+  width:100%;padding:13px 15px;border:1px solid var(--line);border-radius:10px;
+  background:#fff;font-size:16px;color:var(--ink);
+  outline:none;transition:border-color .2s, box-shadow .2s;
+}
+.field input:focus{border-color:var(--cinnabar);box-shadow:0 0 0 3px rgba(176,58,46,.12)}
+.field .hint{font-size:12px;color:var(--ink-3);margin-top:5px}
+
+.count-row{display:flex;gap:8px;flex-wrap:wrap}
+.count-chip{
+  flex:1 1 90px;min-height:46px;border:1px solid var(--line);border-radius:10px;
+  background:#fff;color:var(--ink-2);font-size:14px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;line-height:1.25;transition:all .18s;
+}
+.count-chip small{font-size:11px;color:var(--ink-3)}
+.count-chip.sel{border-color:var(--cinnabar);background:var(--cinnabar);color:#fff;box-shadow:0 4px 14px rgba(176,58,46,.3)}
+.count-chip.sel small{color:rgba(255,255,255,.85)}
+
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;min-height:52px;border:none;border-radius:12px;
+  font-size:17px;font-weight:600;letter-spacing:.14em;color:#fff;
+  background:linear-gradient(135deg,var(--cinnabar),var(--cinnabar-deep));
+  box-shadow:0 6px 18px rgba(176,58,46,.32);transition:transform .15s, box-shadow .15s;
+}
+.btn:active{transform:translateY(2px);box-shadow:0 3px 10px rgba(176,58,46,.3)}
+.btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line);box-shadow:none;font-weight:500}
+.btn.jade{background:linear-gradient(135deg,var(--jade),#2E4A3B);box-shadow:0 6px 18px rgba(62,92,75,.3)}
+.btn-row{display:flex;gap:12px;margin-top:22px}
+
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:20px}
+.info-item{
+  background:rgba(255,255,255,.45);border:1px solid var(--line);border-radius:12px;
+  padding:12px 14px;font-size:13px;color:var(--ink-3);
+}
+.info-item strong{display:block;color:var(--ink);font-size:14px;font-weight:600;margin-bottom:2px}
+.quote{
+  font-family:var(--serif);text-align:center;font-size:14px;color:var(--ink-2);
+  border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);
+  padding:14px 8px;margin-top:22px;letter-spacing:.14em;
+}
+
+/* ===== 答题页 ===== */
+.quiz-head{
+  position:sticky;top:0;z-index:20;margin:0 -20px 18px;padding:12px 20px 10px;
+  background:rgba(246,240,226,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.quiz-topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:820px;margin:0 auto}
+.quiz-title{font-family:var(--serif);font-size:15px;font-weight:700;letter-spacing:.08em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.timer{
+  display:flex;align-items:center;gap:7px;flex-shrink:0;
+  font-variant-numeric:tabular-nums;font-size:15px;font-weight:600;
+  color:var(--ink);background:rgba(255,255,255,.6);border:1px solid var(--line);
+  border-radius:999px;padding:5px 13px;
+}
+.timer.warn{color:var(--cinnabar);border-color:var(--cinnabar);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.6}}
+.progress-track{height:5px;background:rgba(42,36,27,.10);border-radius:99px;overflow:hidden;margin-top:10px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--cinnabar),var(--cinnabar-soft));border-radius:99px;transition:width .3s}
+
+.q-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.q-cat{
+  font-size:12px;letter-spacing:.1em;color:var(--jade);
+  border:1px solid rgba(62,92,75,.4);border-radius:999px;padding:3px 12px;background:rgba(62,92,75,.08);
+}
+.q-no{font-family:var(--serif);font-size:14px;color:var(--ink-3);letter-spacing:.08em}
+.q-stem{
+  font-family:var(--serif);font-size:clamp(17px,4.2vw,20px);font-weight:700;line-height:1.75;
+  color:var(--ink);margin-bottom:20px;
+}
+.opts{display:flex;flex-direction:column;gap:12px}
+.opt{
+  display:flex;align-items:flex-start;gap:12px;
+  width:100%;min-height:52px;padding:13px 14px;
+  background:rgba(255,255,255,.62);border:1.5px solid var(--line);border-radius:12px;
+  text-align:left;font-size:16px;color:var(--ink);line-height:1.5;
+  transition:all .16s;
+}
+.opt:hover{border-color:var(--cinnabar-soft);background:#fff}
+.opt .key{
+  flex-shrink:0;width:26px;height:26px;border-radius:50%;
+  border:1.5px solid var(--ink-3);display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;color:var(--ink-3);margin-top:2px;transition:all .16s;
+}
+.opt.sel{border-color:var(--cinnabar);background:rgba(176,58,46,.07)}
+.opt.sel .key{background:var(--cinnabar);border-color:var(--cinnabar);color:#fff}
+
+.q-nav{display:flex;align-items:center;gap:10px;margin-top:24px}
+.q-nav .btn{flex:1}
+.q-nav .btn:disabled{opacity:.35}
+.grid-nav{
+  display:flex;gap:6px;overflow-x:auto;padding:8px 2px 10px;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.grid-nav::-webkit-scrollbar{display:none}
+.gcell{
+  flex-shrink:0;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line);
+  background:rgba(255,255,255,.55);color:var(--ink-2);font-size:13px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.gcell.done{background:var(--jade);border-color:var(--jade);color:#fff}
+.gcell.cur{border-color:var(--cinnabar);background:var(--cinnabar);color:#fff}
+.gcell:disabled{opacity:.4}
+
+/* 交卷确认弹层 */
+.modal-mask{
+  position:fixed;inset:0;background:rgba(42,36,27,.5);z-index:50;
+  display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.modal-mask.open{opacity:1;pointer-events:auto}
+.modal{
+  width:100%;max-width:420px;background:var(--paper);border-radius:20px 20px 0 0;
+  padding:28px 24px 30px;transform:translateY(20px);transition:transform .25s;
+}
+.modal-mask.open .modal{transform:translateY(0)}
+@media(min-width:600px){
+  .modal-mask{align-items:center;padding:20px}
+  .modal{border-radius:20px}
+}
+.modal h3{font-family:var(--serif);font-size:20px;margin-bottom:8px;letter-spacing:.06em}
+.modal p{font-size:14px;color:var(--ink-2);margin-bottom:20px}
+
+/* ===== 结果页 ===== */
+.result-hero{text-align:center;padding:30px 0 6px}
+.res-person{
+  display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+  font-size:14px;color:var(--ink-2);margin-bottom:16px;letter-spacing:.04em;
+}
+.res-person .chip{
+  background:rgba(255,255,255,.6);border:1px solid var(--line);border-radius:999px;
+  padding:5px 14px;font-weight:500;
+}
+.res-person .chip b{color:var(--cinnabar);font-weight:700}
+.result-score{
+  font-family:var(--serif);font-weight:900;font-size:clamp(56px,15vw,84px);
+  letter-spacing:.02em;color:var(--ink);line-height:1.1;
+}
+.result-score em{font-style:normal;font-size:.38em;color:var(--ink-3);font-weight:600;margin-left:4px}
+.result-ratio{font-size:16px;color:var(--ink-2);letter-spacing:.14em;margin-top:4px}
+.result-rank{
+  display:inline-flex;align-items:center;gap:8px;margin-top:16px;
+  font-family:var(--serif);font-size:16px;letter-spacing:.3em;font-weight:700;
+  padding:8px 22px;border-radius:999px;border:1.5px solid;
+}
+.rank-excellent{color:var(--gold);border-color:var(--gold);background:rgba(184,134,43,.08)}
+.rank-good{color:var(--jade);border-color:var(--jade);background:rgba(62,92,75,.08)}
+.rank-pass{color:var(--ink-2);border-color:var(--ink-3);background:rgba(122,111,94,.08)}
+.rank-fail{color:var(--cinnabar);border-color:var(--cinnabar);background:rgba(176,58,46,.07)}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.stat{
+  background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:14px;
+  padding:14px 8px;text-align:center;
+}
+.stat b{display:block;font-size:22px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--ink-3);letter-spacing:.08em}
+
+.review{margin-top:26px}
+.review h3{font-family:var(--serif);font-size:18px;letter-spacing:.1em;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.review h3::after{content:"";flex:1;height:1px;background:var(--line)}
+.r-item{
+  background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:14px;
+  padding:16px 16px 14px;margin-bottom:12px;
+}
+.r-head{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:12px;color:var(--ink-3);letter-spacing:.06em}
+.r-q{font-family:var(--serif);font-size:15px;font-weight:600;line-height:1.7;margin-bottom:10px}
+.r-line{font-size:14px;line-height:1.7;padding:5px 10px;border-radius:8px;margin-bottom:6px}
+.r-line .tag{display:inline-block;min-width:44px;font-weight:700;margin-right:6px;font-size:13px}
+.r-right{background:rgba(62,124,79,.10);color:#2E5E3C}
+.r-wrong{background:rgba(176,58,46,.08);color:var(--cinnabar-deep)}
+.r-exp{font-size:13px;color:var(--ink-2);border-left:3px solid var(--gold-soft);padding:2px 0 2px 12px;margin-top:8px;line-height:1.7}
+.history{margin-top:26px}
+.history h3{font-family:var(--serif);font-size:18px;letter-spacing:.1em;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.history h3::after{content:"";flex:1;height:1px;background:var(--line)}
+.h-item{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.45);border:1px solid var(--line);border-radius:12px;
+  padding:12px 14px;margin-bottom:8px;font-size:14px;
+}
+.h-item b{color:var(--cinnabar);font-variant-numeric:tabular-nums}
+.h-item .h-info{flex:1;color:var(--ink-2);min-width:0}
+.h-item .h-info small{display:block;color:var(--ink-3);font-size:12px}
+.h-empty{text-align:center;color:var(--ink-3);font-size:13px;padding:14px 0}
+
+.foot-note{text-align:center;font-size:12px;color:var(--ink-3);letter-spacing:.1em;margin-top:34px;line-height:1.9}
+.toast{
+  position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:#F6F0E2;font-size:14px;padding:10px 20px;border-radius:999px;
+  opacity:0;pointer-events:none;transition:all .25s;z-index:60;max-width:88vw;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:480px){
+  .wrap{padding:18px 16px 88px}
+  .quiz-head{margin:0 -16px 16px;padding:12px 16px 10px}
+  .q-nav{flex-direction:column}
+  .q-nav .btn{width:100%}
+  .info-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ 视图：欢迎 ============ -->
+<section class="view" id="view-welcome">
+  <div class="wrap">
+    <div class="welcome-hero">
+      <span class="kicker">yb科技 · 华北五省（市、自治区）大学生人文知识竞赛</span>
+      <h1 class="hero-title">观乎人文<em class="sub">化成天下</em></h1>
+      <p class="hero-theme">2026 · 校内选拔赛 · 线上模拟答题</p>
+      <div class="seal" aria-hidden="true">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="57" fill="#B03A2E"/>
+          <circle cx="60" cy="60" r="53" fill="none" stroke="#F6F0E2" stroke-width="2.4"/>
+          <circle cx="60" cy="60" r="34" fill="none" stroke="#F6F0E2" stroke-width="1.6" opacity=".9"/>
+          <path id="sealArc" d="M 60,14 A 46,46 0 1,1 59.9,14" fill="none"/>
+          <text font-size="9.6" fill="#F6F0E2" font-weight="600" letter-spacing="2.6">
+            <textPath href="#sealArc">华北五省人文知识竞赛 · 校内选拔</textPath>
+          </text>
+          <text x="60" y="56" text-anchor="middle" font-size="17" fill="#F6F0E2" font-weight="700">人文</text>
+          <text x="60" y="74" text-anchor="middle" font-size="10" fill="#F6F0E2" letter-spacing="2">化成天下</text>
+          <text x="60" y="88" text-anchor="middle" font-size="5.6" fill="#F6F0E2" opacity=".85">2026</text>
+        </svg>
+      </div>
+      <p class="seal-note">山西能源学院 · 校内选拔赛模拟答题</p>
+    </div>
+
+    <div class="panel">
+      <div class="field">
+        <label for="inp-name">姓名 <b style="color:var(--cinnabar)">*</b></label>
+        <input id="inp-name" type="text" placeholder="请输入姓名" maxlength="20" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="inp-sid">学号 <b style="color:var(--cinnabar)">*</b></label>
+        <input id="inp-sid" type="text" placeholder="请输入学号" maxlength="20" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="inp-class">系部 / 班级 <b style="color:var(--cinnabar)">*</b></label>
+        <input id="inp-class" type="text" placeholder="例如：强基学院 · 智能采矿 2401 班" maxlength="30" autocomplete="off">
+        <p class="hint">姓名、学号、班级将随成绩一起显示，每人仅限作答一次</p>
+      </div>
+      <div class="field">
+        <label>题目数量</label>
+        <div class="count-row" id="count-row">
+          <button type="button" class="count-chip" data-n="10">10 题<small>约 10 分钟</small></button>
+          <button type="button" class="count-chip sel" data-n="30">30 题<small>约 30 分钟</small></button>
+          <button type="button" class="count-chip" data-n="60">60 题<small>约 60 分钟</small></button>
+        </div>
+      </div>
+      <button class="btn" id="btn-start">开始答题</button>
+      <div class="info-grid">
+        <div class="info-item"><strong>竞赛内容</strong>文史哲 · 经典阅读 · 艺术修养</div>
+        <div class="info-item"><strong>覆盖模块</strong>科学史 · 山西文史 · 文明探源</div>
+        <div class="info-item"><strong>题型</strong>单选题 · 四选一</div>
+        <div class="info-item"><strong>计时</strong>每题约 1 分钟，到时自动交卷</div>
+      </div>
+      <p class="quote">“观乎天文，以察时变；观乎人文，以化成天下。” ——《周易·贲卦》</p>
+    </div>
+
+    <div class="history" id="history-block" style="display:none">
+      <h3>本机答题记录</h3>
+      <div id="history-list"></div>
+    </div>
+
+    <p class="foot-note">2026 年华北五省（市、自治区）大学生人文知识竞赛校内选拔赛<br>山西能源学院 · yb科技 模拟答题系统</p>
+  </div>
+</section>
+
+<!-- ============ 视图：答题 ============ -->
+<section class="view" id="view-quiz">
+  <div class="quiz-head">
+    <div class="quiz-topbar">
+      <span class="quiz-title">观乎人文 · 化成天下</span>
+      <span class="timer" id="timer">--:--</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+  <div class="wrap">
+    <div class="q-meta">
+      <span class="q-cat" id="q-cat">文史哲基础</span>
+      <span class="q-no" id="q-no">第 1 / 30 题</span>
+    </div>
+    <p class="q-stem" id="q-stem"></p>
+    <div class="opts" id="opts"></div>
+    <div class="grid-nav" id="grid-nav"></div>
+    <div class="q-nav">
+      <button class="btn ghost" id="btn-prev" style="flex:0 0 112px">上一题</button>
+      <button class="btn" id="btn-next">下一题</button>
+      <button class="btn jade" id="btn-submit" style="flex:0 0 112px">交卷</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 视图：结果 ============ -->
+<section class="view" id="view-result">
+  <div class="wrap">
+    <div class="result-hero">
+      <div class="res-person" id="res-person"></div>
+      <div class="result-score" id="res-score">0<em>分</em></div>
+      <p class="result-ratio" id="res-ratio">正确率 0%</p>
+      <span class="result-rank rank-fail" id="res-rank">待定</span>
+      <div class="stat-grid">
+        <div class="stat"><b id="res-correct">0</b><span>答对</span></div>
+        <div class="stat"><b id="res-wrong">0</b><span>答错</span></div>
+        <div class="stat"><b id="res-time">0:00</b><span>用时</span></div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn ghost" id="btn-home" style="flex:0 0 128px">返回首页</button>
+    </div>
+    <div class="review" id="review-block">
+      <h3>答题回顾</h3>
+      <div id="review-list"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 交卷确认弹层 ============ -->
+<div class="modal-mask" id="submit-mask">
+  <div class="modal">
+    <h3>确认交卷？</h3>
+    <p id="submit-stat">你已作答 0 题，其中未作答 0 题。交卷后将立即出分。</p>
+    <div class="btn-row" style="margin-top:0">
+      <button class="btn ghost" id="btn-cancel-submit" style="flex:0 0 120px">继续答题</button>
+      <button class="btn jade" id="btn-confirm-submit">确认交卷</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ================================================================
+ * 题库 —— 依据《2026年华北五省大学生人文知识竞赛校内选拔赛通知》
+ * 六大模块：文史哲基础 / 传统文化经典 / 艺术修养 / 科学史与自然科学
+ *          / 山西历史文化 / 中华文明探源
+ * 字符串统一使用单引号边界，内容中的引用使用中文引号
+ * ================================================================ */
+var BANK = [
+  /* ---------- 一、文史哲基础 ---------- */
+  {cat:'文史哲基础', q:'《论语》开篇“学而时习之”中“习”的意思是？', opts:['学习','温习、练习','习惯','熟悉'], ans:1, exp:'“学而时习之”的“习”指温习、复习，强调学后及时巩固。'},
+  {cat:'文史哲基础', q:'“温故而知新，可以为师矣”出自？', opts:['《孟子》','《大学》','《论语》','《中庸》'], ans:2, exp:'出自《论语·为政》，讲温习旧知而能有新体会，就可以做老师了。'},
+  {cat:'文史哲基础', q:'屈原投江殉国的国家是？', opts:['齐国','楚国','燕国','赵国'], ans:1, exp:'屈原是楚国贵族与诗人，秦军破郢后投汨罗江殉国，端午节即源于此。'},
+  {cat:'文史哲基础', q:'《左传》的体例是？', opts:['纪传体','国别体','编年体','纪事本末体'], ans:2, exp:'《左传》相传为左丘明所作，是我国第一部叙事详备的编年体史书。'},
+  {cat:'文史哲基础', q:'我国第一部国别体史书是？', opts:['《国语》','《战国策》','《左传》','《史记》'], ans:0, exp:'《国语》相传为左丘明编撰，是我国最早的一部国别体史书。'},
+  {cat:'文史哲基础', q:'《战国策》的整理编定者是？', opts:['司马迁','刘向','班固','刘勰'], ans:1, exp:'西汉刘向整理编定《战国策》，记战国时期纵横家言论与谋略。'},
+  {cat:'文史哲基础', q:'东晋田园诗人陶渊明的代表作是？', opts:['《桃花源记》','《滕王阁序》','《岳阳楼记》','《阿房宫赋》'], ans:0, exp:'陶渊明著《桃花源记》《归去来兮辞》《饮酒》等，是田园诗派鼻祖。'},
+  {cat:'文史哲基础', q:'被称为“诗仙”的唐代诗人是？', opts:['杜甫','白居易','李白','王维'], ans:2, exp:'李白诗风飘逸奔放、想象瑰丽，被后世尊为“诗仙”。'},
+  {cat:'文史哲基础', q:'被称为“诗圣”的唐代诗人是？', opts:['李白','杜甫','李商隐','杜牧'], ans:1, exp:'杜甫诗作反映社会现实、忧国忧民，被尊为“诗圣”，其诗称“诗史”。'},
+  {cat:'文史哲基础', q:'倡导新乐府运动、主张“文章合为时而著”的唐代诗人是？', opts:['白居易','元稹','刘禹锡','韩愈'], ans:0, exp:'白居易与元稹倡导新乐府运动，主张诗歌反映现实、关注民生。'},
+  {cat:'文史哲基础', q:'被称为“诗佛”的唐代诗人是？', opts:['王维','孟浩然','韦应物','贾岛'], ans:0, exp:'王维诗中有画、空灵禅意，晚年笃信佛教，被称为“诗佛”。'},
+  {cat:'文史哲基础', q:'“大江东去，浪淘尽，千古风流人物”出自苏轼的？', opts:['《水调歌头》','《念奴娇·赤壁怀古》','《定风波》','《江城子》'], ans:1, exp:'出自苏轼《念奴娇·赤壁怀古》，是豪放词的代表作。'},
+  {cat:'文史哲基础', q:'南宋豪放派词人、人称“词中之龙”的是？', opts:['陆游','辛弃疾','岳飞','张孝祥'], ans:1, exp:'辛弃疾词风雄浑豪放，与苏轼并称“苏辛”，被誉为“词中之龙”。'},
+  {cat:'文史哲基础', q:'“寻寻觅觅，冷冷清清，凄凄惨惨戚戚”出自李清照的？', opts:['《如梦令》','《声声慢》','《一剪梅》','《醉花阴》'], ans:1, exp:'出自李清照《声声慢》，叠字连用，写尽孤寂愁苦，是婉约词名篇。'},
+  {cat:'文史哲基础', q:'“王师北定中原日，家祭无忘告乃翁”出自陆游的？', opts:['《书愤》','《示儿》','《游山西村》','《钗头凤》'], ans:1, exp:'《示儿》是陆游绝笔，表达收复中原的遗愿，爱国之情至死不渝。'},
+  {cat:'文史哲基础', q:'元杂剧《窦娥冤》的作者是？', opts:['关汉卿','王实甫','马致远','白朴'], ans:0, exp:'关汉卿著《窦娥冤》，列“元曲四大家”之首，与《拜月亭》等并称。'},
+  {cat:'文史哲基础', q:'元杂剧《西厢记》的作者是？', opts:['关汉卿','王实甫','郑光祖','纪君祥'], ans:1, exp:'王实甫《西厢记》写崔莺莺与张生爱情，有“愿天下有情人终成眷属”之句。'},
+  {cat:'文史哲基础', q:'《牡丹亭》中“情不知所起，一往而深”的作者是？', opts:['汤显祖','孔尚任','洪昇','冯梦龙'], ans:0, exp:'明代汤显祖《牡丹亭》为“临川四梦”之一，写杜丽娘与柳梦梅的生死之恋。'},
+  {cat:'文史哲基础', q:'《三国演义》的作者是？', opts:['施耐庵','罗贯中','吴承恩','曹雪芹'], ans:1, exp:'罗贯中著《三国演义》，是我国第一部长篇章回体历史演义小说。'},
+  {cat:'文史哲基础', q:'《水浒传》的作者是？', opts:['罗贯中','吴承恩','施耐庵','兰陵笑笑生'], ans:2, exp:'施耐庵著《水浒传》，写梁山好汉起义故事，是英雄传奇小说代表作。'},
+  {cat:'文史哲基础', q:'《西游记》的作者是？', opts:['吴承恩','曹雪芹','蒲松龄','罗贯中'], ans:0, exp:'吴承恩著《西游记》，是我国浪漫主义神魔小说的代表作。'},
+  {cat:'文史哲基础', q:'文言短篇小说集《聊斋志异》的作者是？', opts:['蒲松龄','吴敬梓','李汝珍','纪晓岚'], ans:0, exp:'清代蒲松龄著《聊斋志异》，借狐鬼花妖寄寓讽喻，有“写鬼写妖高人一等”之誉。'},
+  {cat:'文史哲基础', q:'讽刺小说《儒林外史》的作者是？', opts:['吴敬梓','曹雪芹','李宝嘉','刘鹗'], ans:0, exp:'清代吴敬梓《儒林外史》以讽刺笔法刻画科举制度下的士林百态。'},
+  {cat:'文史哲基础', q:'现代文学中《呐喊》《彷徨》的作者是？', opts:['鲁迅','茅盾','巴金','老舍'], ans:0, exp:'鲁迅小说集《呐喊》《彷徨》收录《狂人日记》《阿Q正传》等名篇。'},
+  {cat:'文史哲基础', q:'巴金“激流三部曲”是？', opts:['《雾》《雨》《电》','《家》《春》《秋》','《春蚕》《秋收》《残冬》','《幻灭》《动摇》《追求》'], ans:1, exp:'巴金“激流三部曲”为《家》《春》《秋》，写封建大家庭的崩溃。'},
+  {cat:'文史哲基础', q:'长篇小说《子夜》的作者是？', opts:['茅盾','老舍','巴金','钱钟书'], ans:0, exp:'茅盾《子夜》以上海为背景，写民族工业资本家的挣扎，是现代文学经典。'},
+  {cat:'文史哲基础', q:'《骆驼祥子》的作者是？', opts:['老舍','曹禺','沈从文','张爱玲'], ans:0, exp:'老舍《骆驼祥子》写人力车夫祥子的悲剧命运，是京味文学代表作。'},
+  {cat:'文史哲基础', q:'话剧《雷雨》的作者是？', opts:['曹禺','田汉','郭沫若','夏衍'], ans:0, exp:'曹禺《雷雨》写周鲁两家三十年的恩怨，是中国现代话剧成熟的标志。'},
+  {cat:'文史哲基础', q:'散文名篇《背影》的作者是？', opts:['朱自清','冰心','郁达夫','周作人'], ans:0, exp:'朱自清《背影》写父亲送别时的背影，质朴深情，是白话散文名篇。'},
+  {cat:'文史哲基础', q:'“唐宋八大家”中被苏轼誉为“文起八代之衰”的是？', opts:['柳宗元','韩愈','欧阳修','苏轼'], ans:1, exp:'韩愈倡导古文运动，“文起八代之衰，道济天下之溺”，为古文运动领袖。'},
+  {cat:'文史哲基础', q:'“醉翁之意不在酒，在乎山水之间也”出自？', opts:['欧阳修《醉翁亭记》','范仲淹《岳阳楼记》','王勃《滕王阁序》','柳宗元《小石潭记》'], ans:0, exp:'出自欧阳修《醉翁亭记》，写于贬谪滁州期间。'},
+  {cat:'文史哲基础', q:'“明月几时有？把酒问青天”出自？', opts:['苏轼《水调歌头》','李白《把酒问月》','张若虚《春江花月夜》','辛弃疾《青玉案》'], ans:0, exp:'出自苏轼《水调歌头·明月几时有》，是中秋咏月名篇。'},
+  {cat:'文史哲基础', q:'“床前明月光，疑是地上霜”的作者是？', opts:['杜甫','李白','王昌龄','孟浩然'], ans:1, exp:'出自李白《静夜思》，妇孺皆知的思乡名作。'},
+  {cat:'文史哲基础', q:'“会当凌绝顶，一览众山小”写的是哪座山？', opts:['华山','泰山','嵩山','衡山'], ans:1, exp:'出自杜甫《望岳》，写东岳泰山，抒发青年杜甫的凌云壮志。'},
+  {cat:'文史哲基础', q:'“同是天涯沦落人，相逢何必曾相识”出自？', opts:['白居易《琵琶行》','白居易《长恨歌》','元稹《莺莺传》','刘禹锡《酬乐天》'], ans:0, exp:'出自白居易《琵琶行》，诗人与琵琶女同病相怜的感慨。'},
+  {cat:'文史哲基础', q:'“六王毕，四海一，蜀山兀，阿房出”出自？', opts:['杜牧《阿房宫赋》','贾谊《过秦论》','苏洵《六国论》','柳宗元《封建论》'], ans:0, exp:'出自杜牧《阿房宫赋》，借秦之奢亡讽喻当世。'},
+  {cat:'文史哲基础', q:'“春风又绿江南岸，明月何时照我还”的作者是？', opts:['王安石','苏轼','黄庭坚','秦观'], ans:1, exp:'出自王安石《泊船瓜洲》，“绿”字炼字精妙，为千古名句。'},
+  {cat:'文史哲基础', q:'“人生自古谁无死，留取丹心照汗青”出自？', opts:['文天祥《过零丁洋》','岳飞《满江红》','陆游《书愤》','辛弃疾《破阵子》'], ans:0, exp:'出自文天祥《过零丁洋》，表现了舍生取义的民族气节。'},
+  {cat:'文史哲基础', q:'“落霞与孤鹜齐飞，秋水共长天一色”出自？', opts:['王勃《滕王阁序》','范仲淹《岳阳楼记》','崔颢《黄鹤楼》','王维《山中与裴秀才迪书》'], ans:0, exp:'出自王勃《滕王阁序》，是骈文中的千古名句。'},
+  {cat:'文史哲基础', q:'“初唐四杰”不包括下列哪位？', opts:['王勃','杨炯','卢照邻','陈子昂'], ans:3, exp:'初唐四杰为王勃、杨炯、卢照邻、骆宾王；陈子昂是稍后的诗风革新者。'},
+  {cat:'文史哲基础', q:'《师说》中“师者，所以传道受业解惑也”的作者是？', opts:['韩愈','柳宗元','刘禹锡','王安石'], ans:0, exp:'韩愈《师说》论师道，主张“无贵无贱，无长无少，道之所存，师之所存”。'},
+  {cat:'文史哲基础', q:'《劝学》中“青，取之于蓝，而青于蓝”的作者是？', opts:['孔子','孟子','荀子','庄子'], ans:2, exp:'荀子《劝学》以“青出于蓝”喻学习使人进步，强调学不可以已。'},
+  {cat:'文史哲基础', q:'“生于忧患，死于安乐”出自？', opts:['《论语》','《孟子》','《荀子》','《老子》'], ans:1, exp:'出自《孟子·告子下》，告诫人应在忧患中砥砺前行。'},
+  {cat:'文史哲基础', q:'“鱼，我所欲也；熊掌，亦我所欲也”出自？', opts:['《孟子》','《庄子》','《墨子》','《韩非子》'], ans:0, exp:'出自《孟子·告子上》，“舍生取义”由此而来。'},
+  {cat:'文史哲基础', q:'“天下兴亡，匹夫有责”这一思想由谁提出？', opts:['顾炎武','黄宗羲','王夫之','李贽'], ans:0, exp:'语本顾炎武《日知录》中“保天下者，匹夫之贱与有责焉”，后梁启超概括为“天下兴亡，匹夫有责”。'},
+  {cat:'文史哲基础', q:'“为天地立心，为生民立命，为往圣继绝学，为万世开太平”出自？', opts:['周敦颐','张载','二程','朱熹'], ans:1, exp:'此为北宋张载“横渠四句”，表达了儒者的宏大抱负。'},
+  {cat:'文史哲基础', q:'提出“知行合一”的心学思想家是？', opts:['朱熹','王阳明','陆九渊','王夫之'], ans:1, exp:'明代王阳明（王守仁）倡导“致良知”“知行合一”，集心学之大成。'},
+  {cat:'文史哲基础', q:'孔子思想的核心是？', opts:['仁','兼爱','无为','法治'], ans:0, exp:'孔子以“仁”为核心，主张“仁者爱人”“克己复礼”。'},
+  {cat:'文史哲基础', q:'主张“性善论”的先秦思想家是？', opts:['荀子','孟子','告子','韩非子'], ans:1, exp:'孟子主“性善论”，荀子主“性恶论”，二人同为儒家却观点相反。'},
+  {cat:'文史哲基础', q:'《逍遥游》出自哪部典籍？', opts:['《老子》','《庄子》','《列子》','《淮南子》'], ans:1, exp:'《逍遥游》是《庄子》名篇，追求精神绝对自由。'},
+  {cat:'文史哲基础', q:'主张“兼爱”“非攻”的先秦学派是？', opts:['儒家','道家','墨家','法家'], ans:2, exp:'墨家创始人墨子主张兼爱、非攻、尚贤、节用。'},
+  {cat:'文史哲基础', q:'法家思想的集大成者是？', opts:['商鞅','申不害','韩非','李斯'], ans:2, exp:'韩非综合商鞅“法”、申不害“术”、慎到“势”，是法家集大成者。'},
+  {cat:'文史哲基础', q:'“白马非马”的命题出自先秦哪一学派？', opts:['名家','纵横家','阴阳家','农家'], ans:0, exp:'名家公孙龙著《白马论》提出“白马非马”，是逻辑思辨的著名命题。'},
+  {cat:'文史哲基础', q:'汉武帝时提出“罢黜百家，独尊儒术”的是？', opts:['董仲舒','贾谊','晁错','公孙弘'], ans:0, exp:'董仲舒向汉武帝建议“罢黜百家，独尊儒术”，儒学自此成为正统。'},
+  {cat:'文史哲基础', q:'宋代理学的集大成者是？', opts:['周敦颐','张载','程颢','朱熹'], ans:3, exp:'朱熹集理学之大成，编定《四书章句集注》，后世科举以之为标准。'},
+  {cat:'文史哲基础', q:'科举制度正式创立于哪个朝代？', opts:['汉朝','隋朝','唐朝','宋朝'], ans:1, exp:'隋炀帝设进士科，科举制正式确立，唐代进一步完善。'},
+  {cat:'文史哲基础', q:'科举殿试第一名称为？', opts:['解元','会元','状元','探花'], ans:2, exp:'殿试第一名称状元，第二名称榜眼，第三名称探花。'},
+  {cat:'文史哲基础', q:'科举“连中三元”指乡试、会试、殿试均获第一名，分别称？', opts:['解元、会元、状元','会元、解元、状元','状元、会元、解元','解元、状元、会元'], ans:0, exp:'乡试第一为解元，会试第一为会元，殿试第一为状元，三者皆中称“连中三元”。'},
+  {cat:'文史哲基础', q:'《史记》的五种体例不包括？', opts:['本纪','世家','列传','志'], ans:3, exp:'《史记》五体为本纪、表、书、世家、列传，开纪传体先河。'},
+  {cat:'文史哲基础', q:'《资治通鉴》之名取意于？', opts:['鉴于往事，有资于治道','鉴古知今，通达万变','资以借鉴，通晓古今','以史为鉴，通权达变'], ans:0, exp:'宋神宗赐名“资治通鉴”，意为借鉴往事，有助于治理之道。'},
+  {cat:'文史哲基础', q:'明成祖时编纂的大型类书是？', opts:['《四库全书》','《永乐大典》','《古今图书集成》','《册府元龟》'], ans:1, exp:'《永乐大典》由解缙等主持编纂，是我国古代最大的类书。'},
+  {cat:'文史哲基础', q:'清乾隆年间编纂、由纪昀（纪晓岚）任总纂官的大型丛书是？', opts:['《永乐大典》','《四库全书》','《古今图书集成》','《太平御览》'], ans:1, exp:'《四库全书》分经史子集四部，是中国古代最大的一部官修丛书。'},
+  {cat:'文史哲基础', q:'我国第一部字典《说文解字》的作者是？', opts:['许慎','刘熙','张揖','顾野王'], ans:0, exp:'东汉许慎著《说文解字》，首创部首编排法，收字九千余。'},
+  {cat:'文史哲基础', q:'我国第一部词典是？', opts:['《说文解字》','《尔雅》','《方言》','《释名》'], ans:1, exp:'《尔雅》是我国最早解释词义的词典，被列为十三经之一。'},
+  {cat:'文史哲基础', q:'甲骨文最早被谁发现并确认？', opts:['王懿荣','刘鹗','罗振玉','王国维'], ans:0, exp:'1899 年王懿荣在药“龙骨”上发现甲骨文，开启甲骨学研究。'},
+  {cat:'文史哲基础', q:'十天干不包括下列哪一项？', opts:['甲','乙','戊','丑'], ans:3, exp:'十天干为甲乙丙丁戊己庚辛壬癸；“丑”属十二地支。'},
+  {cat:'文史哲基础', q:'传统节日端午节主要是为了纪念？', opts:['屈原','伍子胥','介子推','大禹'], ans:0, exp:'端午节纪念战国诗人屈原，有赛龙舟、吃粽子等习俗。'},
+  {cat:'文史哲基础', q:'“但愿人长久，千里共婵娟”中“婵娟”指？', opts:['月亮','美女','桂花','美酒'], ans:0, exp:'出自苏轼《水调歌头》，“婵娟”代指月亮。'},
+  {cat:'文史哲基础', q:'《诗经》共有多少篇？', opts:['三百篇','三百零五篇','三百一十一篇','五百篇'], ans:1, exp:'《诗经》存诗 305 篇，另有 6 篇“笙诗”有目无辞，故称“诗三百”实为 305 篇。'},
+  {cat:'文史哲基础', q:'“史家之绝唱，无韵之离骚”是鲁迅对哪部书的评价？', opts:['《汉书》','《史记》','《资治通鉴》','《左传》'], ans:1, exp:'鲁迅评价《史记》为“史家之绝唱，无韵之离骚”，兼美文史。'},
+  {cat:'文史哲基础', q:'《诗经》中“关关雎鸠，在河之洲”出自下列哪一篇？', opts:['《关雎》','《蒹葭》','《硕鼠》','《采薇》'], ans:0, exp:'出自《诗经·国风·周南·关雎》，是《诗经》首篇，描写君子对淑女的思慕。'},
+  {cat:'文史哲基础', q:'“路漫漫其修远兮，吾将上下而求索”出自哪部作品？', opts:['《九歌》','《离骚》','《天问》','《橘颂》'], ans:1, exp:'出自屈原《离骚》，表达了诗人对理想的不懈追求。'},
+  {cat:'文史哲基础', q:'《史记》是我国第一部纪传体通史，其作者是？', opts:['班固','司马光','司马迁','左丘明'], ans:2, exp:'司马迁著《史记》，上起黄帝、下至汉武帝，凡一百三十篇；班固《汉书》为纪传体断代史。'},
+  {cat:'文史哲基础', q:'“老骥伏枥，志在千里；烈士暮年，壮心不已”出自？', opts:['曹植《白马篇》','曹操《龟虽寿》','曹丕《燕歌行》','王粲《七哀诗》'], ans:1, exp:'出自曹操《步出夏门行·龟虽寿》，抒写老当益壮的豪情。'},
+  {cat:'文史哲基础', q:'唐宋八大家中，属于唐代的两位是？', opts:['韩愈、柳宗元','欧阳修、苏轼','王安石、曾巩','苏洵、苏辙'], ans:0, exp:'唐宋八大家中唐代仅韩愈、柳宗元二人，其余六位为宋代文人。'},
+  {cat:'文史哲基础', q:'“先天下之忧而忧，后天下之乐而乐”出自范仲淹的哪篇文章？', opts:['《醉翁亭记》','《岳阳楼记》','《爱莲说》','《小石潭记》'], ans:1, exp:'出自范仲淹《岳阳楼记》。《醉翁亭记》为欧阳修作，《爱莲说》为周敦颐作。'},
+  {cat:'文史哲基础', q:'《红楼梦》前八十回的作者是？', opts:['罗贯中','吴承恩','曹雪芹','施耐庵'], ans:2, exp:'曹雪芹著《红楼梦》前八十回，后四十回一般认为是高鹗所续。'},
+  {cat:'文史哲基础', q:'“己所不欲，勿施于人”出自哪部典籍？', opts:['《孟子》','《论语》','《庄子》','《墨子》'], ans:1, exp:'语出《论语·颜渊》，是孔子“恕”道的核心表述。'},
+  {cat:'文史哲基础', q:'儒家所说的“五常”是指？', opts:['仁义礼智信','温良恭俭让','忠孝节义廉','礼乐射御书'], ans:0, exp:'五常即仁、义、礼、智、信；“温良恭俭让”为子贡称孔子之德。'},
+  {cat:'文史哲基础', q:'“修身齐家治国平天下”出自“四书”中的哪一部？', opts:['《论语》','《孟子》','《中庸》','《大学》'], ans:3, exp:'语出《大学》“三纲八目”，由内圣而外王，层层推及。'},
+
+  /* ---------- 二、传统文化经典阅读 ---------- */
+  {cat:'经典阅读', q:'《周易》中“地势坤”的下一句是？', opts:['君子以自强不息','君子以厚德载物','君子以顺德积小','君子以遏恶扬善'], ans:1, exp:'《周易·坤卦》：“地势坤，君子以厚德载物”，与乾卦“自强不息”相对。'},
+  {cat:'经典阅读', q:'“三纲五常”中“五常”的另一种说法是？', opts:['仁义礼智信','温良恭俭让','忠孝廉耻勇','礼乐射御书'], ans:0, exp:'五常即仁、义、礼、智、信；温良恭俭让是子贡形容孔子的德行。'},
+  {cat:'经典阅读', q:'《诗经》“六义”中属于表现手法的是？', opts:['风雅颂','赋比兴','宫商角','平上去'], ans:1, exp:'风雅颂为体裁分类，赋比兴为表现手法，合称“六义”。'},
+  {cat:'经典阅读', q:'“不义而富且贵，于我如浮云”出自？', opts:['《孟子》','《论语》','《荀子》','《庄子》'], ans:1, exp:'出自《论语·述而》，孔子表明重义轻利的价值观。'},
+  {cat:'经典阅读', q:'《大学》提出的“三纲领”是？', opts:['明明德、亲民、止于至善','格物、致知、诚意','正心、修身、齐家','治国、平天下、明明德'], ans:0, exp:'《大学》三纲领为明明德、亲民、止于至善；八条目为格致诚正修齐治平。'},
+  {cat:'经典阅读', q:'“中庸”思想在“四书”中由哪部专述？', opts:['《大学》','《论语》','《中庸》','《孟子》'], ans:2, exp:'《中庸》相传为子思所作，阐述中庸之道与诚的思想。'},
+  {cat:'经典阅读', q:'《孟子》中“民为贵，社稷次之，君为轻”体现的思想是？', opts:['民本思想','君权神授','无为而治','兼爱非攻'], ans:0, exp:'孟子主张民贵君轻，是儒家民本思想的集中体现。'},
+  {cat:'经典阅读', q:'“富贵不能淫，贫贱不能移，威武不能屈”出自？', opts:['《论语》','《孟子》','《大学》','《荀子》'], ans:1, exp:'出自《孟子·滕文公下》，此谓“大丈夫”标准。'},
+  {cat:'经典阅读', q:'《道德经》又名？', opts:['《南华经》','《道德真经》','《冲虚经》','《通玄经》'], ans:1, exp:'《道德经》即《老子》，又名《道德真经》；《南华经》为《庄子》别称。'},
+  {cat:'经典阅读', q:'“上善若水，水善利万物而不争”出自？', opts:['《论语》','《道德经》','《孟子》','《庄子》'], ans:1, exp:'出自《道德经》第八章，以水喻至善之德。'},
+  {cat:'经典阅读', q:'“祸兮福之所倚，福兮祸之所伏”出自？', opts:['《周易》','《道德经》','《庄子》','《荀子》'], ans:1, exp:'出自《道德经》第五十八章，体现朴素的辩证法思想。'},
+  {cat:'经典阅读', q:'“治大国若烹小鲜”出自？', opts:['《老子》','《论语》','《韩非子》','《管子》'], ans:0, exp:'出自《道德经》第六十章，喻治国贵在清静无为、不扰民。'},
+  {cat:'经典阅读', q:'《庄子》又称？', opts:['《道德经》','《南华经》','《冲虚经》','《清静经》'], ans:1, exp:'《庄子》又名《南华经》，唐代尊为道教经典。'},
+  {cat:'经典阅读', q:'“庄周梦蝶”的典故出自？', opts:['《齐物论》','《逍遥游》','《养生主》','《秋水》'], ans:0, exp:'“庄周梦蝶”出自《庄子·齐物论》，喻物我界限的消解。'},
+  {cat:'经典阅读', q:'“吾生也有涯，而知也无涯”出自？', opts:['《老子》','《庄子》','《论语》','《墨子》'], ans:1, exp:'出自《庄子·养生主》，感叹生命有限而知识无穷。'},
+  {cat:'经典阅读', q:'“相濡以沫，不如相忘于江湖”出自？', opts:['《庄子》','《孟子》','《荀子》','《列子》'], ans:0, exp:'出自《庄子·大宗师》，以鱼喻人，谈生死与自由。'},
+  {cat:'经典阅读', q:'《墨子》中“兼相爱，交相利”是哪家主张？', opts:['儒家','道家','墨家','法家'], ans:2, exp:'墨家主张兼爱互利，反对战争与奢靡。'},
+  {cat:'经典阅读', q:'《荀子》中提出“制天命而用之”的思想，主张？', opts:['人定胜天、改造自然','听天由命','天人感应','绝地天通'], ans:0, exp:'荀子主张“制天命而用之”，强调发挥人的主观能动性。'},
+  {cat:'经典阅读', q:'《韩非子》中“守株待兔”讽刺的是？', opts:['不劳而获、因循守旧','勤劳致富','见义勇为','知错能改'], ans:0, exp:'“守株待兔”讽刺拘守旧例、不图进取的人。'},
+  {cat:'经典阅读', q:'“自相矛盾”的寓言出自？', opts:['《韩非子》','《吕氏春秋》','《战国策》','《列子》'], ans:0, exp:'“自相矛盾”出自《韩非子·难一》，喻言行前后抵触。'},
+  {cat:'经典阅读', q:'“刻舟求剑”的寓言出自？', opts:['《吕氏春秋》','《韩非子》','《淮南子》','《庄子》'], ans:0, exp:'“刻舟求剑”出自《吕氏春秋·察今》，讽喻拘泥固执、不知变通。'},
+  {cat:'经典阅读', q:'《吕氏春秋》是战国末期谁组织门客编纂的？', opts:['吕不韦','李斯','商鞅','春申君'], ans:0, exp:'秦相吕不韦集门客编《吕氏春秋》，成书后悬赏千金改一字，即“一字千金”。'},
+  {cat:'经典阅读', q:'《列子》中“愚公移山”的故事体现的精神是？', opts:['坚持不懈、人定胜天','急功近利','听天由命','投机取巧'], ans:0, exp:'愚公移山喻持之以恒、锲而不舍，终能感动上天。'},
+  {cat:'经典阅读', q:'《论语》中“君子和而不同”的下一句是？', opts:['小人同而不和','小人比而不周','小人骄而不泰','小人同而和'], ans:0, exp:'“君子和而不同，小人同而不和”，讲求同存异。'},
+  {cat:'经典阅读', q:'“工欲善其事，必先利其器”出自？', opts:['《论语》','《孟子》','《中庸》','《大学》'], ans:0, exp:'出自《论语·卫灵公》，喻做事先做好准备。'},
+  {cat:'经典阅读', q:'“岁寒，然后知松柏之后凋也”出自？', opts:['《论语》','《庄子》','《周易》','《礼记》'], ans:0, exp:'出自《论语·子罕》，以松柏喻坚贞品格。'},
+  {cat:'经典阅读', q:'“三十而立，四十而不惑”出自？', opts:['《论语·为政》','《论语·学而》','《礼记》','《孟子》'], ans:0, exp:'出自《论语·为政》，孔子自述人生进境。'},
+  {cat:'经典阅读', q:'《尚书》是记载什么的典籍？', opts:['上古政事与诰命','诗歌总集','礼仪制度','占卜记录'], ans:0, exp:'《尚书》即“上古之书”，记虞夏商周政事诰命，是政书之祖。'},
+  {cat:'经典阅读', q:'“五经”不包括下列哪一部？', opts:['《诗》','《书》','《礼》','《乐》'], ans:3, exp:'五经为《诗》《书》《礼》《易》《春秋》；《乐》已亡佚，故称“五经”而不称“六经”。'},
+  {cat:'经典阅读', q:'《礼记》中“礼者，天地之序也”强调礼的什么作用？', opts:['维护社会秩序','限制个人自由','繁文缛节','等级压迫'], ans:0, exp:'儒家认为礼是天地秩序的体现，用以规范人伦、维护社会和谐。'},
+  {cat:'经典阅读', q:'“玉不琢，不成器；人不学，不知道”出自？', opts:['《学记》','《论语》','《孟子》','《荀子》'], ans:0, exp:'出自《礼记·学记》，是我国最早的教育专论。'},
+  {cat:'经典阅读', q:'《春秋》是鲁国哪位史官体系的编年史？', opts:['孔子','左丘明','公羊高','谷梁赤'], ans:0, exp:'《春秋》相传为孔子据鲁国史书修订，笔法微言大义。'},
+  {cat:'经典阅读', q:'《春秋》三传不包括？', opts:['《左传》','《公羊传》','《谷梁传》','《国语》'], ans:3, exp:'春秋三传为《左传》《公羊传》《谷梁传》；《国语》是国别体史书。'},
+  {cat:'经典阅读', q:'“唇亡齿寒”的典故出自哪部典籍？', opts:['《左传》','《史记》','《战国策》','《国语》'], ans:0, exp:'“唇亡齿寒”出自《左传·僖公五年》，讲虞虢相依之理。'},
+  {cat:'经典阅读', q:'“一鼓作气，再而衰，三而竭”出自？', opts:['《左传·曹刿论战》','《史记》','《战国策》','《国语》'], ans:0, exp:'出自《左传》曹刿论战，后为成语“一鼓作气”。'},
+  {cat:'经典阅读', q:'《战国策》主要记载哪个时期的历史？', opts:['春秋时期','战国时期','秦汉之际','三国时期'], ans:1, exp:'《战国策》记战国纵横捭阖、策士游说之事。'},
+  {cat:'经典阅读', q:'“狡兔三窟”的典故与哪位战国人物有关？', opts:['冯谖','苏秦','张仪','毛遂'], ans:0, exp:'冯谖为孟尝君“市义”并营“三窟”，典出《战国策·齐策》。'},
+  {cat:'经典阅读', q:'《后汉书》的作者是？', opts:['班固','范晔','陈寿','司马彪'], ans:1, exp:'南朝范晔著《后汉书》，为二十四史之一。'},
+  {cat:'经典阅读', q:'《三国志》的作者是？', opts:['陈寿','罗贯中','裴松之','习凿齿'], ans:0, exp:'西晋陈寿著《三国志》，裴松之为之作注，史料大增。'},
+  {cat:'经典阅读', q:'《晋书》是唐代谁主持修撰的？', opts:['房玄龄','魏征','长孙无忌','褚遂良'], ans:0, exp:'唐太宗令房玄龄等主持修《晋书》，唐太宗亲撰部分论赞。'},
+  {cat:'经典阅读', q:'《世说新语》的作者是？', opts:['刘义庆','刘勰','刘知几','刘向'], ans:0, exp:'南朝宋刘义庆组织门客编《世说新语》，记魏晋名士言行轶事。'},
+  {cat:'经典阅读', q:'《文心雕龙》的作者是？', opts:['刘勰','钟嵘','萧统','司空图'], ans:0, exp:'南朝刘勰著《文心雕龙》，是我国第一部系统的文学理论专著。'},
+  {cat:'经典阅读', q:'我国第一部诗歌理论批评专著《诗品》的作者是？', opts:['钟嵘','刘勰','严羽','司空图'], ans:0, exp:'南朝钟嵘著《诗品》，品评汉魏至齐梁五言诗，开诗话先河。'},
+  {cat:'经典阅读', q:'《昭明文选》的主编是？', opts:['萧统','萧纲','萧绎','萧衍'], ans:0, exp:'南朝梁昭明太子萧统编《文选》，是我国现存最早的诗文总集。'},
+  {cat:'经典阅读', q:'《全唐诗》共收录唐诗约多少首？', opts:['约四千首','约一万首','约四万九千首','约十万首'], ans:2, exp:'《全唐诗》清康熙年间编成，收诗四万八千九百余首、作者二千二百余人。'},
+  {cat:'经典阅读', q:'《古文观止》是清代谁编选的？', opts:['吴楚材、吴调侯','姚鼐','曾国藩','沈德潜'], ans:0, exp:'清康熙年间吴楚材、吴调侯编选《古文观止》，收文二百二十二篇。'},
+  {cat:'经典阅读', q:'《三字经》相传为宋代哪位学者所著？', opts:['王应麟','朱熹','周敦颐','欧阳修'], ans:0, exp:'《三字经》相传为宋末王应麟编撰，是传统蒙学第一读物。'},
+  {cat:'经典阅读', q:'“人之初，性本善”出自哪部蒙学读物？', opts:['《千字文》','《三字经》','《百家姓》','《弟子规》'], ans:1, exp:'出自《三字经》，开篇即讲人性本善。'},
+  {cat:'经典阅读', q:'《千字文》由南北朝时期哪位文人编纂？', opts:['周兴嗣','萧统','沈约','谢朓'], ans:0, exp:'南朝梁周兴嗣一夜编成《千字文》，用一千个不重复汉字。'},
+  {cat:'经典阅读', q:'《百家姓》中“赵钱孙李”居首，据说是因？', opts:['宋朝皇帝姓赵','编者姓赵','百家姓始祖姓赵','按人口多少排序'], ans:0, exp:'《百家姓》成书于宋初，“赵”为宋国姓，故居首。'},
+  {cat:'经典阅读', q:'“弟子规，圣人训。首孝悌，次谨信”出自？', opts:['《弟子规》','《三字经》','《千字文》','《增广贤文》'], ans:0, exp:'《弟子规》为清代李毓秀据《论语》学而篇编纂的蒙学读物。'},
+  {cat:'经典阅读', q:'“书中自有黄金屋”出自哪位皇帝的劝学诗？', opts:['宋真宗','宋太宗','宋仁宗','唐太宗'], ans:0, exp:'宋真宗《励学篇》有“书中自有黄金屋，书中自有颜如玉”之句。'},
+  {cat:'经典阅读', q:'“读万卷书，行万里路”体现的学习观是？', opts:['知行结合、理论与实践并重','只重读书','只重游历','闭门造车'], ans:0, exp:'读书与游历结合，强调知行合一、开阔眼界。'},
+  {cat:'经典阅读', q:'《论语》中“不愤不启，不悱不发”体现的教学方法是？', opts:['启发式教学','填鸭式教学','死记硬背','放任自流'], ans:0, exp:'孔子主张在学生积极思考而不得时再启发，是启发式教学先声。'},
+  {cat:'经典阅读', q:'“有教无类”是谁提出的教育思想？', opts:['孔子','孟子','荀子','墨子'], ans:0, exp:'孔子首倡“有教无类”，打破贵族垄断教育。'},
+  {cat:'经典阅读', q:'《颜氏家训》的作者是？', opts:['颜之推','颜真卿','颜回','颜延之'], ans:0, exp:'北齐颜之推著《颜氏家训》，是我国第一部系统家训。'},
+  {cat:'经典阅读', q:'《菜根谭》的作者是？', opts:['洪应明','陈继儒','吕坤','袁了凡'], ans:0, exp:'明代洪应明著《菜根谭》，融合儒释道处世智慧。'},
+  {cat:'经典阅读', q:'《朱子家训》中“一粥一饭，当思来处不易”倡导？', opts:['勤俭节约','暴殄天物','及时行乐','铺张浪费'], ans:0, exp:'朱柏庐《朱子家训》倡导勤俭持家、居安思危。'},
+  {cat:'经典阅读', q:'“黑发不知勤学早，白首方悔读书迟”出自？', opts:['颜真卿《劝学》','朱熹《观书有感》','陆游《冬夜读书示子聿》','韩愈《进学解》'], ans:0, exp:'唐代颜真卿《劝学》诗句，劝人珍惜少年时光。'},
+  {cat:'经典阅读', q:'“问渠那得清如许，为有源头活水来”出自？', opts:['朱熹《观书有感》','苏轼《题西林壁》','王安石《登飞来峰》','陆游《游山西村》'], ans:0, exp:'朱熹以源头活水喻读书得新知识，思想常新。'},
+  {cat:'经典阅读', q:'“纸上得来终觉浅，绝知此事要躬行”出自？', opts:['陆游《冬夜读书示子聿》','朱熹《观书有感》','杜甫《奉赠韦左丞丈》','白居易《放言》'], ans:0, exp:'陆游强调亲身实践的重要性。'},
+  {cat:'经典阅读', q:'“不积跬步，无以至千里”出自？', opts:['荀子《劝学》','老子《道德经》','庄子《秋水》','韩愈《原毁》'], ans:0, exp:'出自《荀子·劝学》，喻积累的重要性。'},
+  {cat:'经典阅读', q:'“博学之，审问之，慎思之，明辨之，笃行之”出自？', opts:['《中庸》','《大学》','《论语》','《孟子》'], ans:0, exp:'出自《中庸》第二十章，是儒家为学五步。'},
+  {cat:'经典阅读', q:'《周易》中八卦的卦名不包括？', opts:['乾','坤','离','金'], ans:3, exp:'八卦为乾坤震巽坎离艮兑，象征天地雷风火水山泽。'},
+  {cat:'经典阅读', q:'“穷则变，变则通，通则久”出自？', opts:['《周易·系辞》','《道德经》','《论语》','《管子》'], ans:0, exp:'出自《周易·系辞下》，讲事物发展变化的规律。'},
+  {cat:'经典阅读', q:'“知人者智，自知者明”出自？', opts:['《道德经》','《论语》','《孟子》','《韩非子》'], ans:0, exp:'出自《道德经》第三十三章，强调认识自我的重要性。'},
+  {cat:'经典阅读', q:'“天时不如地利，地利不如人和”出自？', opts:['《孟子》','《孙子兵法》','《荀子》','《管子》'], ans:0, exp:'出自《孟子·公孙丑下》，强调“人和”最可贵。'},
+  {cat:'经典阅读', q:'“兵者，国之大事，死生之地，存亡之道”出自？', opts:['《孙子兵法》','《孙膑兵法》','《六韬》','《司马法》'], ans:0, exp:'出自《孙子兵法·计篇》，开宗明义论战争之重。'},
+  {cat:'经典阅读', q:'“知己知彼，百战不殆”出自？', opts:['《孙子兵法》','《吴子》','《尉缭子》','《三十六计》'], ans:0, exp:'出自《孙子兵法·谋攻篇》，是军事名言。'},
+  {cat:'经典阅读', q:'“不战而屈人之兵，善之善者也”出自？', opts:['《孙子兵法》','《孙膑兵法》','《六韬》','《三略》'], ans:0, exp:'出自《孙子兵法·谋攻篇》，强调以谋略取胜为上。'},
+  {cat:'经典阅读', q:'《三十六计》中“走为上计”原意是？', opts:['形势不利时撤退保全','胆小怕事','消极避战','背信弃义'], ans:0, exp:'“三十六计，走为上计”，指劣势时主动撤退是明智选择。'},
+  {cat:'经典阅读', q:'《黄帝内经》中提出“上医治未病”的思想，意思是？', opts:['高明的医生重视预防','高明的医生不看病','只治绝症','重治疗轻预防'], ans:0, exp:'“治未病”强调未病先防，是中医学预防思想的精髓。'},
+  {cat:'经典阅读', q:'《周易》乾卦中“元亨利贞”被后人解释为？', opts:['仁礼义智','春夏秋冬','元始亨通利和贞正','东南西北'], ans:2, exp:'后世以“元亨利贞”配春夏秋冬四德，也引申为仁礼义智四德。'},
+  {cat:'经典阅读', q:'“忠言逆耳利于行，良药苦口利于病”出自？', opts:['《史记》','《孔子家语》','《战国策》','《说苑》'], ans:0, exp:'语出《史记·留侯世家》，喻听逆耳忠言有益。'},
+  {cat:'经典阅读', q:'“前事不忘，后事之师”出自？', opts:['《战国策》','《史记》','《汉书》','《左传》'], ans:0, exp:'出自《战国策·赵策》，喻记取前人教训。'},
+  {cat:'经典阅读', q:'“桃李不言，下自成蹊”出自？', opts:['《史记》','《论语》','《礼记》','《说苑》'], ans:0, exp:'出自《史记·李将军列传》，喻德高望重者自然受人敬仰。'},
+  {cat:'经典阅读', q:'“智者千虑，必有一失”出自？', opts:['《史记》','《汉书》','《后汉书》','《三国志》'], ans:0, exp:'出自《史记·淮阴侯列传》，劝人不可自恃聪明。'},
+  {cat:'经典阅读', q:'“天行健”的下一句是？', opts:['君子以厚德载物','君子以自强不息','君子以俭德辟难','君子以果行育德'], ans:1, exp:'《周易·乾卦》：“天行健，君子以自强不息”；“地势坤，君子以厚德载物”。'},
+  {cat:'经典阅读', q:'“四书”是指哪四部典籍？', opts:['《诗经》《尚书》《礼记》《周易》','《大学》《中庸》《论语》《孟子》','《论语》《孟子》《老子》《庄子》','《春秋》《左传》《公羊传》《谷梁传》'], ans:1, exp:'四书由朱熹编定：《大学》《中庸》《论语》《孟子》，是科举考试的核心经典。'},
+  {cat:'经典阅读', q:'《道德经》的作者是？', opts:['孔子','庄子','老子','韩非子'], ans:2, exp:'老子（李耳）著《道德经》五千言，为道家奠基之作。'},
+  {cat:'经典阅读', q:'“道生一，一生二，二生三，三生万物”出自？', opts:['《庄子》','《周易》','《道德经》','《淮南子》'], ans:2, exp:'出自《道德经》第四十二章，阐述道家宇宙生成论。'},
+  {cat:'经典阅读', q:'《孙子兵法》的作者是？', opts:['孙膑','孙武','吴起','伍子胥'], ans:1, exp:'春秋时期孙武著《孙子兵法》十三篇，为“兵学圣典”；孙膑为战国时人。'},
+  {cat:'经典阅读', q:'“三人行，必有我师焉”出自《论语》的哪一篇？', opts:['《学而》','《为政》','《述而》','《雍也》'], ans:2, exp:'出自《论语·述而》，体现孔子谦虚好学的精神。'},
+  {cat:'经典阅读', q:'《庄子》“庖丁解牛”的故事主要说明什么道理？', opts:['熟能生巧即可','顺应事物规律，游刃有余','天赋决定成败','勤奋胜于方法'], ans:1, exp:'庖丁“依乎天理”、以无厚入有间，喻顺应规律、掌握事物内在机理。'},
+  {cat:'经典阅读', q:'二十四史中第一部纪传体断代史是？', opts:['《史记》','《汉书》','《后汉书》','《三国志》'], ans:1, exp:'班固《汉书》记西汉一朝，为第一部纪传体断代史；《史记》为通史。'},
+  {cat:'经典阅读', q:'编年体通史《资治通鉴》的主编是？', opts:['司马迁','司马光','欧阳修','刘知几'], ans:1, exp:'北宋司马光主编《资治通鉴》，上起战国、下迄五代，历时十九年成书。'},
+  {cat:'经典阅读', q:'“学而不思则罔”的下一句是？', opts:['思而不学则殆','思而不学则罔','学而不思则怠','不学则殆'], ans:0, exp:'《论语·为政》：“学而不思则罔，思而不学则殆”，强调学思并重。'},
+
+  /* ---------- 三、艺术修养 ---------- */
+  {cat:'艺术修养', q:'颜真卿的楷书代表作是？', opts:['《多宝塔碑》','《兰亭序》','《九成宫醴泉铭》','《玄秘塔碑》'], ans:0, exp:'颜真卿《多宝塔碑》《颜勤礼碑》等为颜体楷书代表作；《九成宫》为欧阳询书。'},
+  {cat:'艺术修养', q:'欧阳询楷书代表作《九成宫醴泉铭》以何著称？', opts:['险峻严谨','丰腴雄浑','瘦硬挺拔','圆润秀美'], ans:0, exp:'欧体结构险峻、法度森严，《九成宫醴泉铭》为楷书典范。'},
+  {cat:'艺术修养', q:'柳公权楷书代表作是？', opts:['《玄秘塔碑》','《多宝塔碑》','《张迁碑》','《曹全碑》'], ans:0, exp:'柳公权《玄秘塔碑》《神策军碑》以骨力劲健著称，世称“颜筋柳骨”。'},
+  {cat:'艺术修养', q:'被尊为“草圣”的东汉书法家是？', opts:['张芝','王羲之','怀素','张旭'], ans:0, exp:'东汉张芝创今草，被尊为“草圣”；唐代张旭、怀素亦有“草圣”之誉。'},
+  {cat:'艺术修养', q:'唐代狂草书法家张旭的代表作是？', opts:['《古诗四帖》','《自叙帖》','《肚痛帖》','《书谱》'], ans:2, exp:'张旭《肚痛帖》为狂草名作；《自叙帖》为怀素所书，《书谱》为孙过庭书论。'},
+  {cat:'艺术修养', q:'怀素《自叙帖》的字体是？', opts:['狂草','行书','楷书','隶书'], ans:0, exp:'怀素《自叙帖》笔势狂放，是狂草代表作，有“颠张醉素”之称。'},
+  {cat:'艺术修养', q:'“天下第二行书”《祭侄文稿》的作者是？', opts:['颜真卿','苏轼','王羲之','米芾'], ans:1, exp:'颜真卿《祭侄文稿》祭悼侄儿，感情真挚，被誉为“天下第二行书”。'},
+  {cat:'艺术修养', q:'“天下第三行书”《寒食帖》的作者是？', opts:['苏轼','黄庭坚','米芾','蔡襄'], ans:0, exp:'苏轼《寒食帖》写贬谪黄州寒食节感慨，被誉为“天下第三行书”。'},
+  {cat:'艺术修养', q:'宋代书法“苏黄米蔡”中“米”指？', opts:['米芾','米友仁','米万钟','米沛'], ans:0, exp:'苏黄米蔡指苏轼、黄庭坚、米芾、蔡襄，为宋四家。'},
+  {cat:'艺术修养', q:'东晋顾恺之的名作《洛神赋图》属于？', opts:['人物画','山水画','花鸟画','风俗画'], ans:0, exp:'顾恺之《洛神赋图》依曹植《洛神赋》绘人神之恋，是早期人物画杰作。'},
+  {cat:'艺术修养', q:'唐代阎立本的名作是？', opts:['《步辇图》','《清明上河图》','《韩熙载夜宴图》','《千里江山图》'], ans:0, exp:'阎立本《步辇图》绘唐太宗接见吐蕃使臣，是传世名画。'},
+  {cat:'艺术修养', q:'《韩熙载夜宴图》的作者是？', opts:['顾闳中','周昉','张萱','孙位'], ans:0, exp:'五代南唐顾闳中绘《韩熙载夜宴图》，记录大臣夜宴场景。'},
+  {cat:'艺术修养', q:'《千里江山图》的作者是？', opts:['王希孟','赵佶','马远','夏圭'], ans:0, exp:'北宋王希孟《千里江山图》以青绿设色绘锦绣山河，现存故宫博物院。'},
+  {cat:'艺术修养', q:'宋代画院画家马远、夏圭的画风被称为？', opts:['马一角、夏半边','马远山、夏近水','马踏燕、夏悬河','马青绿、夏水墨'], ans:0, exp:'马远多作边角之景称“马一角”，夏圭多取半边山水称“夏半边”。'},
+  {cat:'艺术修养', q:'元代赵孟頫主张？', opts:['书画同源、以书入画','中西合璧','重彩浓墨','师法西洋'], ans:0, exp:'赵孟頫倡导“书画本来同”，强调以书法笔意入画。'},
+  {cat:'艺术修养', q:'“元四家”不包括？', opts:['黄公望','吴镇','倪瓒','赵孟頫'], ans:3, exp:'元四家为黄公望、吴镇、倪瓒、王蒙；赵孟頫为其先驱。'},
+  {cat:'艺术修养', q:'明代徐渭开创的画风是？', opts:['大写意花鸟','工笔重彩','青绿山水','界画楼台'], ans:0, exp:'徐渭以狂放笔墨开创大写意花鸟画，影响八大山人、齐白石等。'},
+  {cat:'艺术修养', q:'“扬州八怪”中以画竹著称、题“咬定青山不放松”的是？', opts:['郑板桥','金农','黄慎','李鱓'], ans:0, exp:'郑板桥（郑燮）画竹兰著称，诗书画印兼擅。'},
+  {cat:'艺术修养', q:'近现代画家齐白石以画什么最负盛名？', opts:['虾','马','牛','鹰'], ans:0, exp:'齐白石画虾生动传神，有“白石虾”之誉，自创“红花墨叶”派。'},
+  {cat:'艺术修养', q:'徐悲鸿以画什么闻名？', opts:['奔马','老虎','熊猫','雄鸡'], ans:0, exp:'徐悲鸿以画马著称，代表作《奔马图》寄寓民族精神。'},
+  {cat:'艺术修养', q:'《江山如此多娇》是傅抱石与谁合作完成的巨幅国画？', opts:['关山月','李可染','吴冠中','黄宾虹'], ans:0, exp:'1959 年傅抱石与关山月为人民大会堂合作《江山如此多娇》，毛泽东题字。'},
+  {cat:'艺术修养', q:'敦煌莫高窟以什么艺术闻名于世？', opts:['壁画与彩塑','石刻书法','木版年画','青铜铸造'], ans:0, exp:'莫高窟现存壁画四万五千平方米、彩塑二千余身，是佛教艺术宝库。'},
+  {cat:'艺术修养', q:'被誉为“世界第八大奇迹”的考古艺术遗存是？', opts:['秦始皇陵兵马俑','马王堆汉墓','三星堆青铜器','曾侯乙编钟'], ans:0, exp:'秦始皇陵兵马俑规模宏大、陶俑写实，被誉为“世界第八大奇迹”。'},
+  {cat:'艺术修养', q:'曾侯乙编钟出土于哪个省？', opts:['湖北','湖南','河南','陕西'], ans:0, exp:'1978 年湖北随州出土战国曾侯乙编钟，全套六十五件，音律完整。'},
+  {cat:'艺术修养', q:'中国戏曲中“生旦净丑”四大行当里“净”俗称？', opts:['花脸','小生','老旦','丑角'], ans:0, exp:'“净”行脸上勾画脸谱，俗称花脸，多扮演性格粗犷的人物。'},
+  {cat:'艺术修养', q:'京剧形成于哪个时期？', opts:['清乾隆年间徽班进京后','明末','元代','民国初年'], ans:0, exp:'清乾隆五十五年徽班进京，徽汉合流，道光年间京剧逐渐形成。'},
+  {cat:'艺术修养', q:'京剧“四大须生”中不包括？', opts:['马连良','谭富英','杨宝森','梅兰芳'], ans:3, exp:'四大须生为马连良、谭富英、杨宝森、奚啸伯；梅兰芳是旦角。'},
+  {cat:'艺术修养', q:'昆曲被联合国教科文组织列入人类口头和非物质遗产代表作是在哪一年？', opts:['2001 年','2003 年','2005 年','2008 年'], ans:0, exp:'2001 年昆曲成为首批“人类口头和非物质遗产代表作”。'},
+  {cat:'艺术修养', q:'《牡丹亭》属于哪个剧种的代表剧目？', opts:['昆曲','秦腔','豫剧','越剧'], ans:0, exp:'《牡丹亭》是昆曲经典，汤显祖“临川四梦”之一。'},
+  {cat:'艺术修养', q:'豫剧《花木兰》中“刘大哥讲话理太偏”塑造的是？', opts:['花木兰','穆桂英','秦香莲','红娘'], ans:0, exp:'豫剧《花木兰》唱段脍炙人口，塑造代父从军的女英雄。'},
+  {cat:'艺术修养', q:'越剧发源于？', opts:['浙江','江苏','上海','安徽'], ans:0, exp:'越剧发源于浙江嵊州，后兴盛于上海，以“才子佳人”戏见长。'},
+  {cat:'艺术修养', q:'黄梅戏代表作《天仙配》讲述的是？', opts:['董永与七仙女','白蛇传','梁祝','西厢记'], ans:0, exp:'《天仙配》写董永与七仙女“树上的鸟儿成双对”的经典爱情。'},
+  {cat:'艺术修养', q:'国粹京剧的伴奏乐器“三大件”是？', opts:['京胡、月琴、三弦','二胡、琵琶、笛子','京胡、二胡、古筝','锣、鼓、钹'], ans:0, exp:'京剧文场三大件为京胡、月琴、三弦，武场以锣鼓为主。'},
+  {cat:'艺术修养', q:'古琴名曲《广陵散》相传与哪位历史人物有关？', opts:['嵇康','阮籍','蔡邕','师旷'], ans:0, exp:'魏晋名士嵇康善弹《广陵散》，临刑前叹“广陵散于今绝矣”。'},
+  {cat:'艺术修养', q:'琵琶名曲《十面埋伏》描绘的是？', opts:['垓下之战','赤壁之战','官渡之战','淝水之战'], ans:0, exp:'《十面埋伏》以琵琶模拟楚汉垓下决战，气势磅礴。'},
+  {cat:'艺术修养', q:'民族管弦乐曲《春江花月夜》原为？', opts:['琵琶曲','古筝曲','笛子曲','二胡曲'], ans:0, exp:'《春江花月夜》原为琵琶曲《夕阳箫鼓》，后改编为民乐合奏。'},
+  {cat:'艺术修养', q:'被誉为“钢琴诗人”的是？', opts:['肖邦','李斯特','巴赫','莫扎特'], ans:0, exp:'波兰作曲家肖邦创作大量钢琴曲，旋律诗意，称“钢琴诗人”。'},
+  {cat:'艺术修养', q:'交响乐之父海顿是哪个国家的作曲家？', opts:['奥地利','德国','法国','英国'], ans:0, exp:'奥地利作曲家海顿确立交响曲与弦乐四重奏形式，称“交响乐之父”。'},
+  {cat:'艺术修养', q:'“乐圣”贝多芬的代表作《命运交响曲》是第几交响曲？', opts:['第五','第三','第六','第九'], ans:0, exp:'贝多芬《第五交响曲》以“命运敲门”动机闻名，称《命运交响曲》。'},
+  {cat:'艺术修养', q:'《梁山伯与祝英台》小提琴协奏曲是由谁创作？', opts:['何占豪、陈钢','冼星海','聂耳','贺绿汀'], ans:0, exp:'1959 年何占豪、陈钢创作小提琴协奏曲《梁祝》，融中西音乐于一体。'},
+  {cat:'艺术修养', q:'《黄河大合唱》的作曲者是？', opts:['冼星海','聂耳','任光','麦新'], ans:0, exp:'冼星海作曲、光未然作词的《黄河大合唱》是抗战音乐经典。'},
+  {cat:'艺术修养', q:'中华人民共和国国歌《义勇军进行曲》的作曲者是？', opts:['聂耳','冼星海','田汉','贺绿汀'], ans:0, exp:'聂耳作曲、田汉作词的《义勇军进行曲》，1949 年被定为国歌。'},
+  {cat:'艺术修养', q:'《二泉映月》之外，华彦钧（阿炳）还传下哪些名曲？', opts:['《听松》《寒春风曲》','《光明行》《空山鸟语》','《良宵》《病中吟》','《赛马》《江河水》'], ans:0, exp:'阿炳传世三首二胡曲为《二泉映月》《听松》《寒春风曲》。'},
+  {cat:'艺术修养', q:'二胡曲《赛马》描绘的场景是？', opts:['草原赛马盛会','战马嘶鸣','骏马奔腾于草原','赛马赌博'], ans:0, exp:'黄海怀作曲的《赛马》以奔放旋律描绘草原赛马的欢腾场面。'},
+  {cat:'艺术修养', q:'敦煌壁画中的“飞天”形象属于哪类艺术？', opts:['佛教壁画艺术','宫廷绘画','民间剪纸','瓷器纹样'], ans:0, exp:'飞天是敦煌壁画中优美的佛教天人形象，衣带飘举、凌空飞舞。'},
+  {cat:'艺术修养', q:'中国四大石窟不包括？', opts:['敦煌莫高窟','云冈石窟','龙门石窟','大足石刻'], ans:3, exp:'四大石窟为敦煌莫高窟、大同云冈石窟、洛阳龙门石窟、天水麦积山石窟。'},
+  {cat:'艺术修养', q:'龙门石窟位于？', opts:['河南洛阳','山西大同','甘肃天水','四川广元'], ans:0, exp:'龙门石窟开凿于北魏，位于洛阳伊河两岸，有十万余尊造像。'},
+  {cat:'艺术修养', q:'“中国画”按题材分类不包括？', opts:['人物画','山水画','花鸟画','油画'], ans:3, exp:'中国画按题材分人物、山水、花鸟；油画是西方画种。'},
+  {cat:'艺术修养', q:'中国画中“四君子”指？', opts:['梅兰竹菊','松竹梅兰','梅兰荷菊','竹菊荷梅'], ans:0, exp:'梅兰竹菊象征傲、幽、坚、淡四种品格，称“四君子”。'},
+  {cat:'艺术修养', q:'瓷器“唐三彩”主要流行于？', opts:['唐代','宋代','元代','明代'], ans:0, exp:'唐三彩是唐代低温釉陶器，以黄绿白（褐）三色为主。'},
+  {cat:'艺术修养', q:'宋代五大名窑不包括？', opts:['汝窑','官窑','钧窑','景德镇窑'], ans:3, exp:'宋代五大名窑为汝、官、哥、钧、定；景德镇是元代以后兴起的瓷都。'},
+  {cat:'艺术修养', q:'“雨过天青云破处”形容的是宋代哪一窑瓷器？', opts:['汝窑','定窑','钧窑','哥窑'], ans:0, exp:'汝窑天青釉温润如玉，被誉为宋代名窑之首。'},
+  {cat:'艺术修养', q:'中国四大名绣不包括？', opts:['苏绣','湘绣','蜀绣','苗绣'], ans:3, exp:'四大名绣为苏绣、湘绣、蜀绣、粤绣。'},
+  {cat:'艺术修养', q:'景泰蓝的正式名称是？', opts:['铜胎掐丝珐琅','鎏金铜器','青花瓷','漆器'], ans:0, exp:'景泰蓝即铜胎掐丝珐琅，明代景泰年间盛行，以蓝釉著称。'},
+  {cat:'艺术修养', q:'中国书法五种书体不包括？', opts:['篆书','隶书','楷书','油画'], ans:3, exp:'五种书体为篆隶楷行草；油画属绘画。'},
+  {cat:'艺术修养', q:'汉字“永字八法”是哪种书体的笔法？', opts:['楷书','隶书','草书','篆书'], ans:0, exp:'“永字八法”概括楷书基本笔画笔势，是习字入门。'},
+  {cat:'艺术修养', q:'中国最古老的成熟文字体系是？', opts:['甲骨文','金文','小篆','隶书'], ans:0, exp:'商代甲骨文是我国已发现最早的成熟文字体系。'},
+  {cat:'艺术修养', q:'“文房四宝”指的是？', opts:['笔墨纸砚','琴棋书画','诗书画印','纸墨笔筒'], ans:0, exp:'文房四宝为笔、墨、纸、砚，湖笔徽墨宣纸端砚最负盛名。'},
+  {cat:'艺术修养', q:'“中国十大传世名画”之一的《步辇图》作者是唐代哪位画家？', opts:['阎立本','吴道子','张萱','周昉'], ans:0, exp:'阎立本《步辇图》现存故宫博物院，记文成公主和亲前吐蕃请婚。'},
+  {cat:'艺术修养', q:'以画马著称的唐代画家是？', opts:['韩幹','曹霸','韦偃','李公麟'], ans:0, exp:'韩幹画马著称，《照夜白图》为其代表作。'},
+  {cat:'艺术修养', q:'北宋李公麟擅长？', opts:['白描人物','青绿山水','大写意','泼墨'], ans:0, exp:'李公麟创“白描”画法，代表作《五马图》。'},
+  {cat:'艺术修养', q:'明代“吴门四家”不包括？', opts:['沈周','文徵明','唐寅','徐渭'], ans:3, exp:'吴门四家为沈周、文徵明、唐寅（伯虎）、仇英。'},
+  {cat:'艺术修养', q:'唐寅（唐伯虎）的代表作是？', opts:['《孟蜀宫妓图》','《富春山居图》','《洛神赋图》','《溪山行旅图》'], ans:0, exp:'唐寅《孟蜀宫妓图》为工笔仕女名作；《溪山行旅图》为北宋范宽作。'},
+  {cat:'艺术修养', q:'北宋范宽的传世名作是？', opts:['《溪山行旅图》','《早春图》','《万壑松风图》','《潇湘奇观图》'], ans:0, exp:'范宽《溪山行旅图》气势雄浑，为宋代山水画高峰。'},
+  {cat:'艺术修养', q:'郭熙《早春图》体现了宋代山水画哪一特点？', opts:['可游可居、意境深远','金碧辉煌','写实解剖','透视准确'], ans:0, exp:'郭熙提出“三远”法，其《早春图》表现初春山水的生机。'},
+  {cat:'艺术修养', q:'元代倪瓒山水画的特点是？', opts:['简淡空灵、逸笔草草','富丽堂皇','浓墨重彩','金碧青绿'], ans:0, exp:'倪瓒画风疏淡简远，自称“逸笔草草，不求形似”。'},
+  {cat:'艺术修养', q:'八大山人（朱耷）是哪个朝代的画家？', opts:['明末清初','元代','宋代','清代中后期'], ans:0, exp:'朱耷为明宗室后裔，明亡后出家，画风冷逸孤傲。'},
+  {cat:'艺术修养', q:'书法碑帖中《张迁碑》属于？', opts:['隶书','楷书','行书','草书'], ans:0, exp:'《张迁碑》为东汉隶书名碑，方整朴茂。'},
+  {cat:'艺术修养', q:'“颜筋柳骨”中的“筋”和“骨”分别指？', opts:['颜真卿、柳公权','柳公权、颜真卿','欧阳询、颜真卿','柳公权、欧阳询'], ans:0, exp:'颜真卿书法丰腴含筋力，柳公权书法清劲见骨力。'},
+  {cat:'艺术修养', q:'中国现代美术教育奠基者、曾主持北平艺专的是？', opts:['徐悲鸿','齐白石','刘海粟','林风眠'], ans:0, exp:'徐悲鸿倡导写实主义美术教育，曾任中央美术学院院长。'},
+  {cat:'艺术修养', q:'《开国大典》油画的作者是？', opts:['董希文','靳尚谊','罗中立','陈逸飞'], ans:0, exp:'董希文 1953 年创作油画《开国大典》，为红色美术经典。'},
+  {cat:'艺术修养', q:'罗中立油画《父亲》属于哪个时期的代表作？', opts:['改革开放初期乡土写实','民国时期','抗战时期','新世纪'], ans:0, exp:'1980 年罗中立《父亲》以超写实手法塑造中国农民形象，震动画坛。'},
+  {cat:'艺术修养', q:'《千里江山图》现存于？', opts:['北京故宫博物院','台北故宫博物院','上海博物馆','中国国家博物馆'], ans:0, exp:'《千里江山图》现藏北京故宫博物院，2017 年展出时引发“故宫跑”。'},
+  {cat:'艺术修养', q:'京剧脸谱中红色脸谱多代表？', opts:['忠勇正义','阴险奸诈','刚猛鲁莽','神秘诡异'], ans:0, exp:'红脸如关羽表忠勇，白脸如曹操表奸诈，黑脸表刚直。'},
+  {cat:'艺术修养', q:'中国古建筑中“斗拱”的主要作用是？', opts:['承托屋檐、传递荷载','装饰门窗','排水','采光'], ans:0, exp:'斗拱是中国木构建筑特有的结构构件，层层出挑承托屋檐。'},
+  {cat:'艺术修养', q:'北京故宫的宫殿布局遵循的原则是？', opts:['中轴对称、前朝后寝','随心所欲','依山就势','风水随意'], ans:0, exp:'故宫严格中轴对称，前朝（太和中和保和殿）后寝（乾清宫等）。'},
+  {cat:'艺术修养', q:'颐和园属于哪类园林？', opts:['皇家园林','私家园林','寺庙园林','书院园林'], ans:0, exp:'颐和园是清代皇家园林，以万寿山、昆明湖为主体。'},
+  {cat:'艺术修养', q:'“四大名园”不包括？', opts:['颐和园','承德避暑山庄','拙政园','豫园'], ans:3, exp:'四大名园为颐和园、避暑山庄、拙政园、留园；豫园为上海园林。'},
+  {cat:'艺术修养', q:'被誉为“民间故宫”的山西民居建筑群是？', opts:['王家大院','乔家大院','渠家大院','常家庄园'], ans:0, exp:'灵石王家大院规模宏大，素有“民间故宫”之称。'},
+  {cat:'艺术修养', q:'中国音乐中“五声音阶”是？', opts:['宫商角徵羽','哆来咪发唆','斗米唆拉西','黄钟大吕'], ans:0, exp:'五声音阶为宫商角徵羽，对应简谱 12356。'},
+  {cat:'艺术修养', q:'《木兰诗》与《孔雀东南飞》并称？', opts:['乐府双璧','叙事双璧','汉乐府双璧','古诗双璧'], ans:2, exp:'《木兰诗》与《孔雀东南飞》合称“乐府双璧”。'},
+  {cat:'艺术修养', q:'年画四大产地不包括？', opts:['天津杨柳青','苏州桃花坞','山东杨家埠','北京琉璃厂'], ans:3, exp:'四大年画产地为天津杨柳青、苏州桃花坞、山东潍坊杨家埠、河北武强。'},
+  {cat:'艺术修养', q:'剪纸、皮影、木偶属于？', opts:['民间艺术','宫廷艺术','宗教艺术','文人艺术'], ans:0, exp:'剪纸、皮影、木偶等是植根民间的传统艺术形式。'},
+  {cat:'艺术修养', q:'被誉为“书圣”、其《兰亭集序》被称为“天下第一行书”的书法家是？', opts:['颜真卿','王羲之','欧阳询','柳公权'], ans:1, exp:'东晋王羲之《兰亭集序》被誉为“天下第一行书”，其本人被尊为“书圣”。'},
+  {cat:'艺术修养', q:'北宋风俗画《清明上河图》的作者是？', opts:['张择端','顾恺之','阎立本','唐寅'], ans:0, exp:'张择端绘《清明上河图》，描绘北宋汴京（今开封）城乡市井风貌。'},
+  {cat:'艺术修养', q:'京剧“四大名旦”中包括下列哪位？', opts:['梅兰芳','马连良','谭鑫培','裘盛戎'], ans:0, exp:'四大名旦为梅兰芳、程砚秋、尚小云、荀慧生；马连良为老生名家。'},
+  {cat:'艺术修养', q:'元代画家黄公望的代表作是？', opts:['《千里江山图》','《富春山居图》','《洛神赋图》','《步辇图》'], ans:1, exp:'黄公望《富春山居图》为“元四家”之首的代表作；《千里江山图》为北宋王希孟所绘。'},
+  {cat:'艺术修养', q:'被尊为“画圣”、其人物画衣带飘举“吴带当风”的唐代画家是？', opts:['吴道子','王维','李思训','郑板桥'], ans:0, exp:'吴道子创“吴家样”，笔势圆转、衣带飘举，被后世尊为“画圣”。'},
+  {cat:'艺术修养', q:'古琴曲《高山流水》“知音”典故的主人公是？', opts:['伯牙与钟子期','孔子与颜回','庄子与惠施','萧史与弄玉'], ans:0, exp:'伯牙鼓琴、钟子期善听，“高山流水遇知音”由此而来。'},
+  {cat:'艺术修养', q:'《诗经》按音乐性质分为哪三部分？', opts:['风、雅、颂','赋、比、兴','诗、书、礼','宫、商、角'], ans:0, exp:'《诗经》分为风（民间歌谣）、雅（宫廷正乐）、颂（宗庙祭祀乐歌）；赋比兴为表现手法。'},
+  {cat:'艺术修养', q:'下列不属于“楷书四大家”的是？', opts:['欧阳询','颜真卿','赵孟頫','王献之'], ans:3, exp:'楷书四大家为欧阳询、颜真卿、柳公权、赵孟頫；王献之为东晋行草书家。'},
+  {cat:'艺术修养', q:'二胡名曲《二泉映月》的作者是？', opts:['刘天华','华彦钧（阿炳）','闵惠芬','宋飞'], ans:1, exp:'华彦钧（阿炳）作《二泉映月》，旋律深沉苍凉，为二胡经典名曲。'},
+  {cat:'艺术修养', q:'中国古典园林中，以“一步一景”著称、位于苏州的园林代表作是？', opts:['颐和园','拙政园','避暑山庄','豫园'], ans:1, exp:'拙政园为苏州四大名园之首，是江南私家园林的典范；颐和园、避暑山庄为皇家园林。'},
+
+  /* ---------- 四、科学史与自然科学 ---------- */
+  {cat:'科学史·自然', q:'被誉为“中国 5 世纪的农业百科全书”《齐民要术》的作者是？', opts:['贾思勰','徐光启','宋应星','沈括'], ans:0, exp:'北魏贾思勰著《齐民要术》，是我国现存最早最完整的农学专著。'},
+  {cat:'科学史·自然', q:'《农政全书》的作者是？', opts:['徐光启','贾思勰','王祯','宋应星'], ans:0, exp:'明代徐光启著《农政全书》，系统总结传统农业技术。'},
+  {cat:'科学史·自然', q:'《徐霞客游记》的作者是？', opts:['徐霞客','徐光启','徐渭','徐幹'], ans:0, exp:'明代徐霞客游历三十余年著《徐霞客游记》，是地理学与游记文学杰作。'},
+  {cat:'科学史·自然', q:'我国古代“四大发明”中，最早发明的是？', opts:['指南针','造纸术','印刷术','火药'], ans:0, exp:'指南针源于战国“司南”，是四大发明中起源最早的一项。'},
+  {cat:'科学史·自然', q:'蔡伦改进造纸术是在哪个朝代？', opts:['东汉','西汉','隋朝','唐朝'], ans:0, exp:'东汉蔡伦改进造纸术，用树皮麻头等造出“蔡侯纸”。'},
+  {cat:'科学史·自然', q:'活字印刷术的发明者是？', opts:['毕昇','蔡伦','王祯','沈括'], ans:0, exp:'北宋毕昇发明泥活字印刷，早于欧洲约四百年。'},
+  {cat:'科学史·自然', q:'火药最早用于军事是在哪个朝代？', opts:['唐末','汉代','元代','清代'], ans:0, exp:'唐末火药开始用于军事，宋元时期广泛使用火器。'},
+  {cat:'科学史·自然', q:'东汉华佗的医学成就不包括？', opts:['发明麻沸散','创五禽戏','著《伤寒杂病论》','擅长外科手术'], ans:2, exp:'华佗发明麻沸散、创五禽戏；《伤寒杂病论》为张仲景所著。'},
+  {cat:'科学史·自然', q:'被称为“医圣”、著《伤寒杂病论》的医学家是？', opts:['张仲景','扁鹊','华佗','孙思邈'], ans:0, exp:'东汉张仲景著《伤寒杂病论》，确立辨证论治原则，被尊为“医圣”。'},
+  {cat:'科学史·自然', q:'唐代药王孙思邈的著作是？', opts:['《千金方》','《本草纲目》','《伤寒论》','《神农本草经》'], ans:0, exp:'孙思邈著《千金要方》《千金翼方》，被誉为“药王”。'},
+  {cat:'科学史·自然', q:'我国现存最早的中药学著作是？', opts:['《神农本草经》','《本草纲目》','《唐本草》','《药性论》'], ans:0, exp:'《神农本草经》托名神农，成书于汉代，载药三百六十五种。'},
+  {cat:'科学史·自然', q:'世界上第一部由国家颁行的药典是？', opts:['《唐本草》','《本草纲目》','《神农本草经》','《千金方》'], ans:0, exp:'唐代《新修本草》（唐本草）是世界上第一部国家药典。'},
+  {cat:'科学史·自然', q:'“针灸铜人”最早由哪个朝代铸造？', opts:['北宋','唐代','明代','清代'], ans:0, exp:'北宋王惟一铸针灸铜人并著《铜人腧穴针灸图经》，用于教学考试。'},
+  {cat:'科学史·自然', q:'提出“人痘接种法”预防天花的朝代是？', opts:['明代','宋代','唐代','清代中期'], ans:0, exp:'明代我国发明人痘接种术，是世界免疫学先驱。'},
+  {cat:'科学史·自然', q:'我国第一部编年体历法著作《授时历》的编订者是？', opts:['郭守敬','僧一行','祖冲之','落下闳'], ans:0, exp:'元代郭守敬编《授时历》，以 365.2425 日为回归年，与现行公历一致。'},
+  {cat:'科学史·自然', q:'唐代僧一行主持实测子午线的长度，他是？', opts:['天文学家','画家','书法家','文学家'], ans:0, exp:'僧一行主持天文测量，首次实测子午线长度，并编《大衍历》。'},
+  {cat:'科学史·自然', q:'浑天仪、地动仪的发明者张衡生活于？', opts:['东汉','西汉','三国','西晋'], ans:0, exp:'东汉张衡造浑天仪演示天体运行，造候风地动仪测地震。'},
+  {cat:'科学史·自然', q:'《九章算术》成书于？', opts:['汉代','唐代','宋代','明代'], ans:0, exp:'《九章算术》成书于汉，系统总结先秦至汉数学成就，含方程、勾股等。'},
+  {cat:'科学史·自然', q:'元代朱世杰著《四元玉鉴》，其数学成就是？', opts:['四元高次方程组','圆周率','勾股定理','珠算口诀'], ans:0, exp:'朱世杰《四元玉鉴》提出四元术，是宋元数学高峰之一。'},
+  {cat:'科学史·自然', q:'被誉为“东方文艺复兴”的宋元时期，数学四大家不包括？', opts:['秦九韶','李冶','杨辉','祖冲之'], ans:3, exp:'宋元数学四大家为秦九韶、李冶、杨辉、朱世杰；祖冲之为南朝人。'},
+  {cat:'科学史·自然', q:'秦九韶《数书九章》中“大衍求一术”属于？', opts:['一次同余式组解法','方程求根','几何测量','组合计数'], ans:0, exp:'秦九韶“大衍求一术”即中国剩余定理，早于西方数百年。'},
+  {cat:'科学史·自然', q:'算盘大约在哪个时期普及？', opts:['宋元时期','秦汉时期','魏晋时期','隋唐时期'], ans:0, exp:'算盘在宋元时期流行，明代徐心鲁《盘珠算法》加以总结。'},
+  {cat:'科学史·自然', q:'提出“日心说”的哥白尼是哪个国家的人？', opts:['波兰','意大利','德国','法国'], ans:0, exp:'波兰天文学家哥白尼 1543 年发表《天体运行论》提出日心说。'},
+  {cat:'科学史·自然', q:'伽利略用望远镜观测天体的重大发现是？', opts:['木星卫星、月球环形山','海王星','冥王星','黑洞'], ans:0, exp:'伽利略 1610 年用自造望远镜发现木星四颗卫星、月面环形山等。'},
+  {cat:'科学史·自然', q:'开普勒行星运动三大定律建立在谁的观测数据上？', opts:['第谷·布拉赫','哥白尼','伽利略','牛顿'], ans:0, exp:'开普勒分析第谷三十年观测数据，总结出行星运动三定律。'},
+  {cat:'科学史·自然', q:'元素周期表的创立者是？', opts:['门捷列夫','拉瓦锡','道尔顿','阿伏伽德罗'], ans:0, exp:'俄国化学家门捷列夫 1869 年提出元素周期律并绘制周期表。'},
+  {cat:'科学史·自然', q:'现代化学之父、推翻燃素说的法国科学家是？', opts:['拉瓦锡','达尔文','居里夫人','牛顿'], ans:0, exp:'拉瓦锡以定量实验确立氧化燃烧理论，被称为“现代化学之父”。'},
+  {cat:'科学史·自然', q:'发现镭元素的科学家是？', opts:['居里夫妇','伦琴','贝克勒尔','卢瑟福'], ans:0, exp:'居里夫妇 1898 年发现镭，1903 年与贝克勒尔共获诺贝尔物理学奖。'},
+  {cat:'科学史·自然', q:'发现 X 射线的德国物理学家是？', opts:['伦琴','居里夫人','汤姆逊','赫兹'], ans:0, exp:'1895 年伦琴发现 X 射线，获首届诺贝尔物理学奖。'},
+  {cat:'科学史·自然', q:'提出进化论、著《物种起源》的科学家是？', opts:['达尔文','拉马克','孟德尔','赫胥黎'], ans:0, exp:'1859 年达尔文《物种起源》提出自然选择学说。'},
+  {cat:'科学史·自然', q:'遗传学奠基人、进行豌豆杂交实验的是？', opts:['孟德尔','摩尔根','达尔文','沃森'], ans:0, exp:'奥地利修士孟德尔以豌豆杂交实验发现遗传定律，被称为“遗传学之父”。'},
+  {cat:'科学史·自然', q:'DNA 双螺旋结构是由谁提出的？', opts:['沃森和克里克','达尔文','孟德尔','摩尔根'], ans:0, exp:'1953 年沃森与克里克提出 DNA 双螺旋模型，开启分子生物学时代。'},
+  {cat:'科学史·自然', q:'相对论中著名的质能方程是？', opts:['E=mc²','F=ma','E=mgh','PV=nRT'], ans:0, exp:'爱因斯坦质能方程 E=mc²，揭示了质量与能量的关系。'},
+  {cat:'科学史·自然', q:'量子力学的奠基人、提出“量子”概念的物理学家是？', opts:['普朗克','玻尔','薛定谔','海森堡'], ans:0, exp:'1900 年普朗克提出能量子假说，开启量子时代。'},
+  {cat:'科学史·自然', q:'我国“两弹一星”元勋中，被誉为“中国航天之父”的是？', opts:['钱学森','邓稼先','钱三强','于敏'], ans:0, exp:'钱学森领导我国航天事业，被誉为“中国航天之父”“火箭之王”。'},
+  {cat:'科学史·自然', q:'被誉为“中国原子弹之父”的是？', opts:['邓稼先','钱学森','钱三强','王淦昌'], ans:0, exp:'邓稼先领导核武器研制，被誉为“中国原子弹之父”。'},
+  {cat:'科学史·自然', q:'袁隆平的主要贡献是？', opts:['培育杂交水稻','研制青蒿素','发现胰岛素','培育转基因大豆'], ans:0, exp:'袁隆平被誉为“杂交水稻之父”，大幅提高水稻产量。'},
+  {cat:'科学史·自然', q:'发现青蒿素、获诺贝尔生理学或医学奖的中国科学家是？', opts:['屠呦呦','吴孟超','钟南山','王选'], ans:0, exp:'2015 年屠呦呦因发现青蒿素获诺贝尔生理学或医学奖。'},
+  {cat:'科学史·自然', q:'我国第一颗人造地球卫星“东方红一号”发射于哪一年？', opts:['1970 年','1964 年','1967 年','1975 年'], ans:0, exp:'1970 年 4 月 24 日“东方红一号”发射成功，中国进入航天时代。'},
+  {cat:'科学史·自然', q:'神舟五号载人飞船首飞航天员是？', opts:['杨利伟','翟志刚','聂海胜','景海鹏'], ans:0, exp:'2003 年杨利伟乘神舟五号成为我国首位进入太空的航天员。'},
+  {cat:'科学史·自然', q:'我国首次实现太空行走的航天员是？', opts:['翟志刚','杨利伟','刘伯明','费俊龙'], ans:0, exp:'2008 年翟志刚在神舟七号任务中实现我国首次太空行走。'},
+  {cat:'科学史·自然', q:'“天宫”空间站全面建成于？', opts:['2022 年底','2020 年','2024 年','2018 年'], ans:0, exp:'2022 年底神舟十五号对接成功，中国空间站“T”字基本构型建成。'},
+  {cat:'科学史·自然', q:'“嫦娥五号”带回的月球样品来自？', opts:['月球正面','月球背面','月球两极','月球内部'], ans:0, exp:'2020 年嫦娥五号在月球正面风暴洋北缘采样返回，带回 1731 克月壤。'},
+  {cat:'科学史·自然', q:'“天问一号”探测的目标天体是？', opts:['火星','月球','金星','木星'], ans:0, exp:'2021 年天问一号成功着陆火星，“祝融号”火星车开展巡视探测。'},
+  {cat:'科学史·自然', q:'“奋斗者号”载人深潜器成功坐底的深度是？', opts:['万米级马里亚纳海沟','五千米','六千米','七千米'], ans:0, exp:'2020 年奋斗者号在马里亚纳海沟成功坐底 10909 米。'},
+  {cat:'科学史·自然', q:'“蛟龙号”载人深潜器最大下潜深度约？', opts:['七千米级','三千米','五千米','一万米'], ans:0, exp:'蛟龙号最大下潜深度 7062 米，标志我国深海载人技术跻身世界前列。'},
+  {cat:'科学史·自然', q:'“雪龙号”主要执行的任务是？', opts:['极地科学考察','远洋捕捞','海上救援','海底勘探'], ans:0, exp:'雪龙号是我国极地科考破冰船，多次赴南极北极考察。'},
+  {cat:'科学史·自然', q:'我国北斗卫星导航系统正式建成于？', opts:['2020 年','2015 年','2023 年','2010 年'], ans:0, exp:'2020 年北斗三号系统建成，我国成为世界上第三个独立拥有全球卫星导航系统的国家。'},
+  {cat:'科学史·自然', q:'被誉为“中国天眼”的 500 米口径球面射电望远镜（FAST）位于？', opts:['贵州','云南','四川','新疆'], ans:0, exp:'FAST 位于贵州平塘大窝凼，是世界最大单口径射电望远镜。'},
+  {cat:'科学史·自然', q:'“九章”量子计算原型机的研制单位是？', opts:['中国科学技术大学','清华大学','北京大学','复旦大学'], ans:0, exp:'2020 年中国科大潘建伟团队研制“九章”量子计算机，实现量子计算优越性。'},
+  {cat:'科学史·自然', q:'三峡大坝是世界上最大的？', opts:['水电站','核电站','风电场','火电站'], ans:0, exp:'三峡工程是世界上规模最大的水电站，装机容量 2250 万千瓦。'},
+  {cat:'科学史·自然', q:'“复兴号”动车组的设计时速是？', opts:['350 公里','250 公里','400 公里','500 公里'], ans:0, exp:'复兴号商业运营时速 350 公里，为世界最快商业运营列车之一。'},
+  {cat:'科学史·自然', q:'被誉为“世界屋脊上的铁路”的青藏铁路全线通车于？', opts:['2006 年','2000 年','2010 年','1996 年'], ans:0, exp:'2006 年青藏铁路格拉段通车，是世界海拔最高、线路最长的高原铁路。'},
+  {cat:'科学史·自然', q:'世界上最大的射电望远镜“天眼”的科学目标之一是？', opts:['搜寻地外文明信号','观测太阳黑子','测量地磁场','预报地震'], ans:0, exp:'FAST 主要科学目标包括脉冲星研究、中性氢探测与搜寻地外文明。'},
+  {cat:'科学史·自然', q:'元素“氢”的中文命名源于？', opts:['最轻的气体','最重的元素','金属光泽','稀有气体'], ans:0, exp:'氢是密度最小的元素，中文名“氢”即“轻”的谐音演变。'},
+  {cat:'科学史·自然', q:'水的化学式是？', opts:['H₂O','CO₂','O₂','NaCl'], ans:0, exp:'水由两个氢原子和一个氧原子构成，化学式 H₂O。'},
+  {cat:'科学史·自然', q:'光合作用的主要产物是？', opts:['有机物和氧气','二氧化碳和水','氮气和有机物','氢气和氧气'], ans:0, exp:'绿色植物利用光能把二氧化碳和水合成有机物并释放氧气。'},
+  {cat:'科学史·自然', q:'声音在哪种介质中传播最快？', opts:['固体','液体','气体','真空'], ans:0, exp:'声音传播速度固体大于液体大于气体，真空中不能传播。'},
+  {cat:'科学史·自然', q:'彩虹形成的主要原理是？', opts:['光的折射与反射','光的直线传播','光的衍射','光的偏振'], ans:0, exp:'阳光经水滴折射反射色散成七色光带，形成彩虹。'},
+  {cat:'科学史·自然', q:'火山喷发的主要原因是？', opts:['地壳内部岩浆活动','板块漂移','地震','风化侵蚀'], ans:0, exp:'地幔岩浆沿薄弱地带上升喷出地表，形成火山喷发。'},
+  {cat:'科学史·自然', q:'地球内部圈层从外到内依次是？', opts:['地壳、地幔、地核','地核、地幔、地壳','地壳、地核、地幔','地幔、地壳、地核'], ans:0, exp:'地球由外向内分为地壳、地幔、地核三个圈层。'},
+  {cat:'科学史·自然', q:'大气层中能吸收紫外线、保护地球生物的是？', opts:['臭氧层','对流层','电离层','平流层水汽'], ans:0, exp:'臭氧层位于平流层，吸收太阳紫外线，是地球“保护伞”。'},
+  {cat:'科学史·自然', q:'我国“两弹一星”中“两弹”指？', opts:['原子弹、氢弹','原子弹、导弹','氢弹、核弹','导弹、核弹'], ans:0, exp:'“两弹”指原子弹和氢弹（一说为核弹与导弹），“一星”指人造卫星。'},
+  {cat:'科学史·自然', q:'“863 计划”是我国的？', opts:['高技术研究发展计划','基础研究计划','航天计划','扶贫计划'], ans:0, exp:'1986 年启动的“863 计划”是我国高技术研究发展计划。'},
+  {cat:'科学史·自然', q:'牛顿第一定律又称？', opts:['惯性定律','万有引力定律','能量守恒定律','动量守恒定律'], ans:0, exp:'牛顿第一定律揭示物体惯性，又称惯性定律。'},
+  {cat:'科学史·自然', q:'能量守恒与转化定律的发现者不包括？', opts:['焦耳','亥姆霍兹','迈尔','开尔文'], ans:3, exp:'焦耳、迈尔、亥姆霍兹等发现能量守恒；开尔文确立了热力学温标。'},
+  {cat:'科学史·自然', q:'电磁感应现象的发现者是？', opts:['法拉第','奥斯特','安培','麦克斯韦'], ans:0, exp:'1831 年法拉第发现电磁感应，为发电机奠定理论基础。'},
+  {cat:'科学史·自然', q:'电流磁效应（电流使磁针偏转）的发现者是？', opts:['奥斯特','法拉第','爱迪生','特斯拉'], ans:0, exp:'1820 年丹麦物理学家奥斯特发现电流的磁效应。'},
+  {cat:'科学史·自然', q:'交流电系统的奠基人、名字被用作磁感应强度单位的是？', opts:['特斯拉','爱迪生','伏特','安培'], ans:0, exp:'特斯拉开创交流电系统，磁感应强度单位“特斯拉”以其命名。'},
+  {cat:'科学史·自然', q:'发明电灯、留声机、电影摄影机的是？', opts:['爱迪生','特斯拉','贝尔','福特'], ans:0, exp:'爱迪生一生拥有千余项发明专利，电灯、留声机影响深远。'},
+  {cat:'科学史·自然', q:'电话的发明者是？', opts:['贝尔','爱迪生','莫尔斯','马可尼'], ans:0, exp:'1876 年贝尔发明电话并获专利。'},
+  {cat:'科学史·自然', q:'无线电报的先驱、获 1909 年诺贝尔物理学奖的是？', opts:['马可尼','莫尔斯','贝尔','赫兹'], ans:0, exp:'意大利人马可尼实现远距离无线电报通信，与布劳恩共获诺贝尔奖。'},
+  {cat:'科学史·自然', q:'蒸汽机的改良者、推动工业革命的是？', opts:['瓦特','史蒂芬孙','富尔顿','纽科门'], ans:0, exp:'瓦特改良蒸汽机，使工业革命进入“蒸汽时代”。'},
+  {cat:'科学史·自然', q:'内燃机汽车的大规模生产者、被誉为“汽车大王”的是？', opts:['福特','奔驰','戴姆勒','丰田'], ans:0, exp:'亨利·福特首创流水线生产，让汽车进入普通家庭。'},
+  {cat:'科学史·自然', q:'莱特兄弟的成就是？', opts:['首次实现动力飞行','发明蒸汽机','发明电话','发明无线电'], ans:0, exp:'1903 年莱特兄弟驾驶“飞行者一号”实现人类首次动力飞行。'},
+  {cat:'科学史·自然', q:'青霉素的发现者是？', opts:['弗莱明','巴斯德','科赫','李斯特'], ans:0, exp:'1928 年弗莱明发现青霉素，开创抗生素时代。'},
+  {cat:'科学史·自然', q:'巴氏消毒法是以谁命名的？', opts:['巴斯德','居里','牛顿','门捷列夫'], ans:0, exp:'法国科学家巴斯德创立巴氏消毒法，奠定微生物学基础。'},
+  {cat:'科学史·自然', q:'世界上第一台通用计算机 ENIAC 重约？', opts:['30 吨','3 吨','300 公斤','1 吨'], ans:0, exp:'ENIAC 重约 30 吨、占地 170 平方米，每秒运算五千次。'},
+  {cat:'科学史·自然', q:'“互联网之父”之一、TCP/IP 协议的共同提出者是？', opts:['温顿·瑟夫','比尔·盖茨','乔布斯','蒂姆·伯纳斯-李'], ans:0, exp:'温顿·瑟夫与罗伯特·卡恩共同设计 TCP/IP 协议，被誉为“互联网之父”。'},
+  {cat:'科学史·自然', q:'万维网（WWW）的发明者是？', opts:['蒂姆·伯纳斯-李','比尔·盖茨','拉里·佩奇','马克·扎克伯格'], ans:0, exp:'1989 年蒂姆·伯纳斯-李发明万维网，提出 URL、HTTP、HTML。'},
+  {cat:'科学史·自然', q:'我国第一台亿次巨型计算机“银河一号”研制成功于？', opts:['1983 年','1978 年','1990 年','1995 年'], ans:0, exp:'1983 年国防科技大学研制成功“银河一号”亿次巨型计算机。'},
+  {cat:'科学史·自然', q:'汉字激光照排系统的主持研制者是？', opts:['王选','王永民','倪光南','柳传志'], ans:0, exp:'王选主持研制汉字激光照排系统，引发印刷业“告别铅与火”革命。'},
+  {cat:'科学史·自然', q:'被誉为“杂交水稻之父”的袁隆平毕业于？', opts:['西南农学院','清华大学','北京大学','中国农业大学'], ans:0, exp:'袁隆平 1953 年毕业于西南农学院（今西南大学）。'},
+  {cat:'科学史·自然', q:'“祝融号”火星车命名的“祝融”在中国神话中是？', opts:['火神','水神','雷神','山神'], ans:0, exp:'祝融是上古火神，火星车命名寄托点燃星际探测之火的意义。'},
+  {cat:'科学史·自然', q:'我国空间站核心舱命名为？', opts:['天和','问天','梦天','天舟'], ans:0, exp:'空间站核心舱为“天和”，实验舱为“问天”“梦天”，货运飞船为“天舟”。'},
+  {cat:'科学史·自然', q:'中国古代“四大发明”不包括下列哪一项？', opts:['造纸术','印刷术','地动仪','指南针'], ans:2, exp:'四大发明为造纸术、印刷术、火药、指南针；地动仪为张衡所造，不在其列。'},
+  {cat:'科学史·自然', q:'被称为“中国 17 世纪的工艺百科全书”的《天工开物》作者是？', opts:['宋应星','徐光启','沈括','贾思勰'], ans:0, exp:'明末宋应星著《天工开物》，系统记载农业、手工业技术；《齐民要术》为贾思勰所著。'},
+  {cat:'科学史·自然', q:'药物学巨著《本草纲目》的作者是？', opts:['张仲景','华佗','李时珍','孙思邈'], ans:2, exp:'明代李时珍历时二十七载著《本草纲目》，收载药物 1892 种。'},
+  {cat:'科学史·自然', q:'英国科学史家李约瑟称其“是中国科学史上的里程碑”的《梦溪笔谈》作者是？', opts:['沈括','郭守敬','徐霞客','祖冲之'], ans:0, exp:'北宋沈括《梦溪笔谈》涵盖天文、数学、地质、医药等，李约瑟盛赞其为“中国科学史上的里程碑”。'},
+  {cat:'科学史·自然', q:'南朝数学家祖冲之的主要贡献是？', opts:['发明地动仪','将圆周率精确到小数点后第七位','著《九章算术》','发明活字印刷'], ans:1, exp:'祖冲之将圆周率推算到 3.1415926 至 3.1415927 之间；《九章算术》成书于汉代。'},
+  {cat:'科学史·自然', q:'东汉张衡发明的地震观测仪器是？', opts:['浑天仪','候风地动仪','司南','漏刻'], ans:1, exp:'张衡创制候风地动仪，可遥测千里之外的地震方向；浑天仪为天文演示仪器。'},
+  {cat:'科学史·自然', q:'提出“日心说”、挑战地心说的波兰天文学家是？', opts:['开普勒','伽利略','哥白尼','第谷'], ans:2, exp:'哥白尼于 1543 年发表《天体运行论》，提出日心说。'},
+  {cat:'科学史·自然', q:'万有引力定律的提出者是？', opts:['牛顿','爱因斯坦','法拉第','达尔文'], ans:0, exp:'牛顿于 1687 年《自然哲学的数学原理》中系统阐述万有引力与三大运动定律。'},
+  {cat:'科学史·自然', q:'相对论的提出者是？', opts:['普朗克','玻尔','爱因斯坦','薛定谔'], ans:2, exp:'爱因斯坦 1905 年提出狭义相对论、1915 年提出广义相对论。'},
+  {cat:'科学史·自然', q:'世界上第一台电子计算机 ENIAC 诞生于哪个国家、哪一年？', opts:['美国，1946 年','英国，1943 年','德国，1940 年','苏联，1949 年'], ans:0, exp:'1946 年，美国宾夕法尼亚大学研制成功世界上第一台电子计算机 ENIAC。'},
+
+  /* ---------- 五、山西历史文化 ---------- */
+  {cat:'山西文史', q:'山西省省会是？', opts:['太原','大同','临汾','长治'], ans:0, exp:'太原是山西省省会，古称晋阳，有“龙城”之称。'},
+  {cat:'山西文史', q:'山西因位于什么山以西而得名？', opts:['太行山','吕梁山','中条山','恒山'], ans:0, exp:'山西位于太行山以西，故称“山西”；又因古属晋国称“晋”。'},
+  {cat:'山西文史', q:'晋祠是为纪念哪位历史人物而建？', opts:['唐叔虞','晋文公','赵武','介子推'], ans:0, exp:'晋祠始建于西周，为纪念晋国开国诸侯唐叔虞而建，圣母殿存宋代彩塑。'},
+  {cat:'山西文史', q:'山西“表里山河”的说法最早出自？', opts:['《左传》','《史记》','《汉书》','《水经注》'], ans:0, exp:'《左传》记晋国外有山内有河，形势险要，故称“表里山河”。'},
+  {cat:'山西文史', q:'中国现存最早的皇家祭祀园林晋祠位于太原市的？', opts:['晋源区','小店区','迎泽区','万柏林区'], ans:0, exp:'晋祠位于太原市晋源区悬瓮山麓，是全国重点文物保护单位。'},
+  {cat:'山西文史', q:'中国四大佛教名山之首的五台山位于山西哪个市？', opts:['忻州','朔州','大同','阳泉'], ans:0, exp:'五台山位于忻州市五台县，为文殊菩萨道场。'},
+  {cat:'山西文史', q:'五台山得名于？', opts:['五座山峰环抱如台','五座寺庙','五个皇帝','五种地形'], ans:0, exp:'五台山由东台、西台、南台、北台、中台五座山峰组成，峰顶平坦如台。'},
+  {cat:'山西文史', q:'悬空寺位于山西哪座山？', opts:['恒山','五台山','太行山','吕梁山'], ans:0, exp:'悬空寺建于恒山金龙峡西崖，始建于北魏，为“全球十大奇险建筑”之一。'},
+  {cat:'山西文史', q:'被称为“世界三大奇塔”之一的应县木塔原名？', opts:['佛宫寺释迦塔','普救寺莺莺塔','飞虹塔','大雁塔'], ans:0, exp:'应县木塔即佛宫寺释迦塔，与埃菲尔铁塔、比萨斜塔并称“世界三大奇塔”。'},
+  {cat:'山西文史', q:'永济普救寺因哪部古典名剧而闻名？', opts:['《西厢记》','《牡丹亭》','《长生殿》','《桃花扇》'], ans:0, exp:'《西厢记》故事发生地即永济普救寺，寺内有“莺莺塔”。'},
+  {cat:'山西文史', q:'洪洞大槐树与哪一历史事件有关？', opts:['明代移民','宋代南迁','清代戍边','元代迁都'], ans:0, exp:'明初朝廷组织大规模移民，洪洞大槐树下为集合点，迁民遍及冀鲁豫皖。'},
+  {cat:'山西文史', q:'山西晋商票号“日升昌”总部位于？', opts:['平遥古城','祁县','太谷','太原'], ans:0, exp:'日升昌票号位于平遥古城西大街，被称为“中国现代银行的开山鼻祖”。'},
+  {cat:'山西文史', q:'乔家大院位于山西哪个县？', opts:['祁县','平遥','太谷','灵石'], ans:0, exp:'乔家大院位于祁县东观镇乔家堡村，因影视剧《大红灯笼高高挂》闻名。'},
+  {cat:'山西文史', q:'王家大院素有“华夏民居第一宅”之称，位于？', opts:['灵石县','介休市','汾阳市','孝义市'], ans:0, exp:'灵石县静升镇王家大院依山而建，规模宏大。'},
+  {cat:'山西文史', q:'晋商文化中“诚信为本、义利并重”体现了？', opts:['晋商经营理念','佛教思想','道家思想','法家思想'], ans:0, exp:'晋商以诚信立商，创造了“汇通天下”的金融奇迹。'},
+  {cat:'山西文史', q:'山西煤炭储量居全国前列，被称为？', opts:['煤海','油海','气海','盐海'], ans:0, exp:'山西煤炭资源丰富，素有“煤海”之称，是全国重要能源基地。'},
+  {cat:'山西文史', q:'壶口瀑布位于黄河的哪一段？', opts:['秦晋峡谷段','河套段','下游段','上游段'], ans:0, exp:'壶口瀑布位于黄河中游秦晋峡谷，是黄河上唯一的黄色大瀑布。'},
+  {cat:'山西文史', q:'山西老陈醋的产地主要是？', opts:['太原清徐','运城','大同','临汾'], ans:0, exp:'清徐县是山西老陈醋主产地，有“中国醋都”之称。'},
+  {cat:'山西文史', q:'山西面食“刀削面”以什么著称？', opts:['刀工技艺','面条细长','卤汁浓郁','汤清味鲜'], ans:0, exp:'刀削面中厚边薄、棱锋分明，讲究刀工，是山西面食代表。'},
+  {cat:'山西文史', q:'“面食之乡”指的是？', opts:['山西','陕西','河南','河北'], ans:0, exp:'山西面食品类多达数百种，被誉为“面食之乡”。'},
+  {cat:'山西文史', q:'山西著名的民间艺术“威风锣鼓”起源于？', opts:['临汾','太原','大同','长治'], ans:0, exp:'威风锣鼓源于临汾一带，气势磅礴，是国家级非遗。'},
+  {cat:'山西文史', q:'山西剪纸艺术中，以哪里的剪纸最为著名？', opts:['广灵','平遥','五台','大同'], ans:0, exp:'广灵剪纸以刀刻为主、染色精美，被列入人类非物质文化遗产名录。'},
+  {cat:'山西文史', q:'山西晋剧又称？', opts:['中路梆子','蒲州梆子','上党梆子','北路梆子'], ans:0, exp:'晋剧即中路梆子，是山西影响最大的地方剧种，与蒲剧、北路梆子、上党梆子并称“四大梆子”。'},
+  {cat:'山西文史', q:'山西民歌《走西口》反映的是？', opts:['晋西北人民外出谋生','游牧生活','农耕生活','海上贸易'], ans:0, exp:'“走西口”指明清以来晋西北人经杀虎口等关口到内蒙古谋生，民歌即此背景。'},
+  {cat:'山西文史', q:'阎锡山长期主政山西，其政权被称为？', opts:['晋系','桂系','滇系','川系'], ans:0, exp:'民国时期阎锡山主政山西三十八年，形成“晋系”军阀集团。'},
+  {cat:'山西文史', q:'抗日战争时期，八路军总部长期驻扎在山西哪里？', opts:['武乡县','太原','大同','临汾'], ans:0, exp:'八路军总部先后驻扎武乡王家峪、砖壁村等地，武乡被称为“八路军的故乡”。'},
+  {cat:'山西文史', q:'“平型关大捷”发生于哪一年？', opts:['1937 年','1938 年','1939 年','1940 年'], ans:0, exp:'1937 年 9 月八路军在平型关（今繁峙、灵丘交界）伏击日军，取得抗战首胜。'},
+  {cat:'山西文史', q:'黄崖洞兵工厂位于山西哪个县？', opts:['黎城县','武乡县','左权县','沁源县'], ans:0, exp:'黄崖洞兵工厂位于长治市黎城县，是八路军规模最大的兵工厂。'},
+  {cat:'山西文史', q:'抗战时期八路军副总司令、牺牲于山西辽县（今左权县）的是？', opts:['左权','彭德怀','刘伯承','罗荣桓'], ans:0, exp:'1942 年左权在山西辽县十字岭牺牲，辽县后改名左权县纪念他。'},
+  {cat:'山西文史', q:'“百团大战”的指挥部设在山西？', opts:['武乡县','太原','大寨','阳泉'], ans:0, exp:'百团大战期间八路军总部设于武乡，正太铁路破袭战主要在山西境内展开。'},
+  {cat:'山西文史', q:'解放战争时期，山西太原于哪一年解放？', opts:['1949 年','1948 年','1947 年','1950 年'], ans:0, exp:'1949 年 4 月 24 日太原解放，太原战役是解放华北的最后一场大战。'},
+  {cat:'山西文史', q:'农业学大寨运动中的大寨村位于山西？', opts:['昔阳县','平定县','和顺县','盂县'], ans:0, exp:'大寨位于晋中市昔阳县，二十世纪六七十年代是农业战线一面红旗。'},
+  {cat:'山西文史', q:'山西唯一入选“世界灌溉工程遗产”的古渠是？', opts:['太原晋祠古渠','平陆黄河古渡','汾河古渠','永济蒲津渡'], ans:0, exp:'2021 年太原晋祠古渠灌溉工程入选世界灌溉工程遗产。'},
+  {cat:'山西文史', q:'被誉为“中国死海”、位于运城的盐池是？', opts:['解池（运城盐池）','青海湖','茶卡盐湖','艾比湖'], ans:0, exp:'运城盐池即解池，是中国最古老的盐池之一，孕育了“盐运之城”运城。'},
+  {cat:'山西文史', q:'关帝庙遍及海内外，其祖庙位于山西？', opts:['解州','太原','平遥','大同'], ans:0, exp:'解州关帝庙位于运城解州，始建于隋，是现存规模最大的关帝庙。'},
+  {cat:'山西文史', q:'山西夏县是传说中哪位历史人物的故乡？', opts:['大禹','黄帝','尧','舜'], ans:0, exp:'夏县古称安邑，传为夏朝都城与大禹治水之地，故名“夏县”。'},
+  {cat:'山西文史', q:'春秋五霸之一的晋文公重耳，其流亡与复国故事发生在？', opts:['春秋时期','战国时期','西周','秦代'], ans:0, exp:'晋文公重耳流亡十九年回国即位，成为春秋五霸之一。'},
+  {cat:'山西文史', q:'战国时期赵国的都城是？', opts:['邯郸','晋阳','大梁','临淄'], ans:0, exp:'赵国都城邯郸（今属河北）；晋阳（今太原）是赵国发祥地。'},
+  {cat:'山西文史', q:'汉初“白登之围”发生在山西何处？', opts:['大同白登山','太原晋阳','雁门关','平型关'], ans:0, exp:'公元前 200 年汉高祖刘邦被匈奴围于大同白登山，后纳陈平计脱围。'},
+  {cat:'山西文史', q:'北魏孝文帝改革前，北魏都城平城即今？', opts:['大同','太原','洛阳','西安'], ans:0, exp:'北魏早期都于平城（今大同），孝文帝迁都洛阳并推行汉化改革。'},
+  {cat:'山西文史', q:'隋末李渊父子太原起兵，建立？', opts:['唐朝','隋朝','后唐','北汉'], ans:0, exp:'617 年李渊于太原起兵反隋，618 年建立唐朝，太原称“龙兴之地”。'},
+  {cat:'山西文史', q:'唐代名臣狄仁杰是山西哪里人？', opts:['太原','大同','运城','临汾'], ans:0, exp:'狄仁杰为并州太原人，武则天时期名相，以刚正不阿著称。'},
+  {cat:'山西文史', q:'“三晋”的由来与哪一历史事件有关？', opts:['三家分晋','晋文公称霸','城濮之战','曲沃代翼'], ans:0, exp:'公元前 403 年韩赵魏三家分晋，史称“三晋”，山西由此称“三晋大地”。'},
+  {cat:'山西文史', q:'山西洪洞“苏三监狱”是？', opts:['明代监狱遗址','清代监狱','戏台','县衙'], ans:0, exp:'洪洞明代监狱因京剧《苏三起解》闻名，是我国现存最早的明代监狱。'},
+  {cat:'山西文史', q:'《赵氏孤儿》的故事背景发生在？', opts:['春秋晋国','战国赵国','汉代','唐代'], ans:0, exp:'赵氏孤儿故事源于春秋晋国赵盾家族，程婴、公孙杵臼舍命救孤。'},
+  {cat:'山西文史', q:'山西盂县藏山因何闻名？', opts:['赵氏孤儿藏匿地','悬空寺','藏经洞','石窟'], ans:0, exp:'藏山传为程婴藏匿赵氏孤儿之处，故又名“盂山藏孤”。'},
+  {cat:'山西文史', q:'“人说山西好风光”歌曲中唱到的“左手一指太行山，右手一指是吕梁”，吕梁山位于山西？', opts:['西部','东部','南部','北部'], ans:0, exp:'吕梁山纵贯山西西部，太行山在东部，黄河在晋陕之间流过。'},
+  {cat:'山西文史', q:'山西最高峰是？', opts:['五台山北台叶斗峰','恒山主峰','太行山主峰','霍山主峰'], ans:0, exp:'五台山北台叶斗峰海拔 3061 米，是华北地区最高峰，称“华北屋脊”。'},
+  {cat:'山西文史', q:'山西境内最大的河流是？', opts:['汾河','桑干河','沁河','漳河'], ans:0, exp:'汾河是黄河第二大支流、山西第一大河，纵贯山西中部。'},
+  {cat:'山西文史', q:'娘子关位于山西与哪个省交界？', opts:['河北','河南','陕西','内蒙古'], ans:0, exp:'娘子关在山西平定县东北，为晋冀要冲，素有“天下第九关”之称。'},
+  {cat:'山西文史', q:'雁门关被誉为？', opts:['天下第一关','中华第一关','天下九塞之首','天下雄关'], ans:0, exp:'雁门关位于代县，自古为兵家必争之地，称“天下九塞，雁门为首”。'},
+  {cat:'山西文史', q:'“长城第一险”指的是山西境内的？', opts:['雁门关','娘子关','平型关','杀虎口'], ans:0, exp:'雁门关地势险要，素有“天下九塞，雁门为首”“长城第一险”之誉。'},
+  {cat:'山西文史', q:'山西省鸟是？', opts:['褐马鸡','丹顶鹤','孔雀','朱鹮'], ans:0, exp:'褐马鸡为我国特有珍禽，主产于山西芦芽山、庞泉沟等地，是山西省鸟。'},
+  {cat:'山西文史', q:'山西特产“沁州黄”是指？', opts:['小米','红枣','核桃','苹果'], ans:0, exp:'沁州黄小米产于长治沁县，色泽金黄、营养丰富，为皇家贡米。'},
+  {cat:'山西文史', q:'山西“交城骏枣”“稷山板枣”属于？', opts:['红枣特产','面食','煤炭','中药材'], ans:0, exp:'交城骏枣、稷山板枣是山西著名红枣品种。'},
+  {cat:'山西文史', q:'山西中阳县的“柏籽羊”特产依托的是？', opts:['柏树林放牧','草原放牧','圈舍养殖','水塘养殖'], ans:0, exp:'中阳柏籽羊以柏籽为食，肉质鲜美，是地方特色畜牧产品。'},
+  {cat:'山西文史', q:'“鹳雀楼”位于山西哪个市？', opts:['运城永济','临汾','晋城','长治'], ans:0, exp:'鹳雀楼位于永济黄河东岸，王之涣《登鹳雀楼》“欲穷千里目，更上一层楼”即咏此楼。'},
+  {cat:'山西文史', q:'“欲穷千里目，更上一层楼”描写的是山西哪座名楼？', opts:['鹳雀楼','滕王阁','黄鹤楼','岳阳楼'], ans:0, exp:'王之涣《登鹳雀楼》写永济鹳雀楼，是山西文化名片。'},
+  {cat:'山西文史', q:'山西蒲剧的发源地是？', opts:['运城临猗','临汾','晋城','大同'], ans:0, exp:'蒲剧又称蒲州梆子，发源于运城蒲州（今永济），是山西最古老的梆子戏。'},
+  {cat:'山西文史', q:'山西运城盐湖形成的主要原因是？', opts:['地壳运动形成内陆湖','海水入侵','冰川融化','人工开挖'], ans:0, exp:'运城盐湖是地壳运动形成的内陆咸水湖，古称“盐贩之泽”。'},
+  {cat:'山西文史', q:'闻喜县得名与哪位皇帝有关？', opts:['汉武帝','唐太宗','宋太祖','康熙帝'], ans:0, exp:'西汉元鼎六年汉武帝巡幸途经此地闻平南越大捷，赐名“闻喜”。'},
+  {cat:'山西文史', q:'山西平顺县的“挂壁公路”是？', opts:['太行山悬崖上开凿的公路','平原公路','高速公路','铁路'], ans:0, exp:'平顺县挂壁公路在太行山绝壁上开凿，是“太行天路”奇观。'},
+  {cat:'山西文史', q:'“赵树理”是哪个流派的代表作家？', opts:['山药蛋派','荷花淀派','鸳鸯蝴蝶派','伤痕文学'], ans:0, exp:'赵树理是山药蛋派代表作家，代表作《小二黑结婚》《李有才板话》。'},
+  {cat:'山西文史', q:'《小二黑结婚》的作者是？', opts:['赵树理','马烽','西戎','孙犁'], ans:0, exp:'赵树理 1943 年发表《小二黑结婚》，开创“山药蛋派”。'},
+  {cat:'山西文史', q:'山西抗日根据地民歌《在太行山上》的曲作者是？', opts:['冼星海','聂耳','郑律成','贺绿汀'], ans:0, exp:'桂涛声作词、冼星海作曲的《在太行山上》歌颂太行山抗日军民。'},
+  {cat:'山西文史', q:'山西的“太行精神”核心内涵是？', opts:['不怕牺牲、艰苦奋斗','悠闲安逸','闭关自守','小富即安'], ans:0, exp:'太行精神是抗战时期太行军民铸就的宝贵精神财富。'},
+  {cat:'山西文史', q:'山西闻喜县特产“闻喜煮饼”属于？', opts:['传统糕点','面食','肉制品','乳制品'], ans:0, exp:'闻喜煮饼是晋南传统名点，曾为皇家贡品。'},
+  {cat:'山西文史', q:'山西临汾的“尧庙”是为纪念谁而建？', opts:['尧帝','舜帝','禹帝','黄帝'], ans:0, exp:'尧庙位于临汾尧都区，传尧都平阳即今临汾，是华夏文明源头纪念地。'},
+  {cat:'山西文史', q:'山西垣曲“历山”传说是？', opts:['舜耕历山之处','尧都所在','禹凿龙门之地','黄帝陵'], ans:0, exp:'传舜曾耕于历山（今垣曲历山），历山是华夏农耕文化发祥地之一。'},
+  {cat:'山西文史', q:'山西芮城永乐宫以什么艺术著称？', opts:['元代壁画','宋代彩塑','唐代石雕','明代琉璃'], ans:0, exp:'永乐宫元代道教壁画《朝元图》规模宏大，是中国壁画艺术瑰宝。'},
+  {cat:'山西文史', q:'山西解州关帝庙始建于？', opts:['隋代','汉代','唐代','宋代'], ans:0, exp:'解州关帝庙始建于隋开皇九年，历代重修，为关庙之祖。'},
+  {cat:'山西文史', q:'山西“汾酒”属于什么香型？', opts:['清香型','酱香型','浓香型','米香型'], ans:0, exp:'汾酒是清香型白酒代表，产于汾阳杏花村，有千年酿酒史。'},
+  {cat:'山西文史', q:'“借问酒家何处有，牧童遥指杏花村”中的杏花村在？', opts:['山西汾阳','安徽池州','湖北麻城','陕西西安'], ans:0, exp:'杜牧诗中杏花村一说在山西汾阳，汾酒产地杏花村即此。'},
+  {cat:'山西文史', q:'山西阳城县的“阳城陶瓷”与哪种技艺相关？', opts:['珐华瓷器','青花瓷','唐三彩','紫砂'], ans:0, exp:'阳城珐华器始烧于元代，是山西独特低温釉陶瓷。'},
+  {cat:'山西文史', q:'山西的“堆锦”“堆绫”属于？', opts:['民间工艺美术','戏曲','舞蹈','民歌'], ans:0, exp:'长治堆锦以丝绸堆制立体画，是山西特色民间工艺。'},
+  {cat:'山西文史', q:'山西晋城皇城相府是清代哪位名臣的故居？', opts:['陈廷敬','纪晓岚','刘墉','和珅'], ans:0, exp:'皇城相府是《康熙字典》总阅官陈廷敬的府邸，被称为“东方第一双城古堡”。'},
+  {cat:'山西文史', q:'山西祁县“渠家大院”现辟为？', opts:['晋商文化博物馆','民俗馆','书院','县衙'], ans:0, exp:'渠家大院现为晋商文化博物馆，展示晋商兴衰史。'},
+  {cat:'山西文史', q:'山西襄汾丁村遗址属于？', opts:['旧石器时代遗址','新石器时代','商周','秦汉'], ans:0, exp:'丁村遗址是旧石器时代中期遗址，出土丁村人化石与石器，是山西重要考古发现。'},
+  {cat:'山西文史', q:'山西芮城“西侯度遗址”发现的用火遗迹距今约？', opts:['180 万年','100 万年','50 万年','10 万年'], ans:0, exp:'西侯度遗址发现约 180 万年前的人类用火遗迹，是我国最早用火证据之一。'},
+  {cat:'山西文史', q:'山西永济“蒲津渡遗址”出土的唐代遗存是？', opts:['黄河大铁牛','青铜编钟','陶俑','石碑'], ans:0, exp:'蒲津渡遗址出土唐代开元铁牛，是古代桥梁工程与冶铸技术见证。'},
+  {cat:'山西文史', q:'山西大同的“九龙壁”建于哪个朝代？', opts:['明代','清代','元代','宋代'], ans:0, exp:'大同九龙壁建于明洪武年间，为代王府照壁，是中国现存最大琉璃九龙壁。'},
+  {cat:'山西文史', q:'山西五台山显通寺是中国最早的？', opts:['佛教寺庙之一','道教宫观','清真寺','天主教堂'], ans:0, exp:'显通寺始建于东汉，是中国最早的佛教寺院之一。'},
+  {cat:'山西文史', q:'山西省的简称是？', opts:['晋','冀','陕','秦'], ans:0, exp:'山西古为晋国之地，故简称“晋”；冀为河北简称，陕、秦为陕西简称。'},
+  {cat:'山西文史', q:'世界文化遗产云冈石窟位于山西哪座城市？', opts:['太原','大同','忻州','朔州'], ans:1, exp:'云冈石窟位于大同市武周山南麓，开凿于北魏时期，2001 年列入世界遗产。'},
+  {cat:'山西文史', q:'平遥古城于哪一年被列入世界文化遗产名录？', opts:['1987 年','1997 年','2001 年','2007 年'], ans:1, exp:'1997 年平遥古城与丽江古城等一同列入世界文化遗产。'},
+  {cat:'山西文史', q:'五台山是佛教中哪位菩萨的道场？', opts:['观音菩萨','文殊菩萨','普贤菩萨','地藏菩萨'], ans:1, exp:'五台山为文殊菩萨道场，是中国佛教四大名山之首，2009 年列入世界遗产。'},
+  {cat:'山西文史', q:'中国历史上唯一的女皇帝武则天，其祖籍是？', opts:['洛阳','长安','并州文水（今山西文水）','成都'], ans:2, exp:'武则天祖籍并州文水（今山西文水县），是中国历史上唯一正统女皇帝。'},
+  {cat:'山西文史', q:'三国名将关羽的家乡是？', opts:['河南许昌','河北涿州','山西运城','山东东阿'], ans:2, exp:'关羽为河东解良（今山西运城解州）人，解州关帝庙为海内外关庙之祖。'},
+  {cat:'山西文史', q:'壶口瀑布位于山西与哪个省份的交界处？', opts:['河南','河北','陕西','内蒙古'], ans:2, exp:'壶口瀑布位于山西吉县与陕西宜川之间的黄河干流上，为世界最大黄色瀑布。'},
+  {cat:'山西文史', q:'山西拥有的三处世界文化遗产是？', opts:['云冈石窟、平遥古城、五台山','云冈石窟、平遥古城、壶口瀑布','晋祠、五台山、云冈石窟','平遥古城、应县木塔、五台山'], ans:0, exp:'山西三处世界文化遗产为云冈石窟、平遥古城、五台山；应县木塔、晋祠尚未列入。'},
+  {cat:'山西文史', q:'“问我祖先在何处，山西洪洞大槐树”中“大槐树”位于今山西省哪座城市？', opts:['临汾','运城','晋城','长治'], ans:0, exp:'洪洞县属临汾市，明初大槐树移民是中国历史上规模最大的官方移民之一。'},
+  {cat:'山西文史', q:'被誉为“世界现存最高最古老的木构塔”、位于山西应县的建筑是？', opts:['晋祠圣母殿','佛宫寺释迦塔（应县木塔）','飞虹塔','大雁塔'], ans:1, exp:'应县木塔（佛宫寺释迦塔）建于辽代，高 67.31 米，为现存世界最高最古老木构楼阁式塔。'},
+
+  /* ---------- 六、中华文明探源 ---------- */
+  {cat:'文明探源', q:'中华文明探源工程启动于哪一年？', opts:['2002 年','1996 年','2010 年','2018 年'], ans:0, exp:'2002 年“中华文明探源工程”正式启动，是继夏商周断代工程后又一重大考古项目。'},
+  {cat:'文明探源', q:'中华文明探源工程提出的文明定义标准不包括？', opts:['农业和手工业发展','阶级分化','都邑性城址','语言文字完全统一'], ans:3, exp:'探源工程提出文明三要素：农业手工业发展、阶级分化、都邑性城址。'},
+  {cat:'文明探源', q:'良渚古城遗址列入《世界遗产名录》是在哪一年？', opts:['2019 年','2015 年','2017 年','2021 年'], ans:0, exp:'2019 年 7 月良渚古城遗址列入世界遗产，实证中华五千年文明史。'},
+  {cat:'文明探源', q:'良渚文化距今约？', opts:['5300—4300 年','7000—6000 年','4000—3000 年','8000—7000 年'], ans:0, exp:'良渚文化距今约 5300—4300 年，其古城、水利系统与玉礼器体系已具早期国家形态。'},
+  {cat:'文明探源', q:'良渚古城遗址出土的典型玉器是？', opts:['玉琮、玉璧','青铜鼎','甲骨','金缕玉衣'], ans:0, exp:'良渚文化以玉琮、玉璧、玉钺等玉礼器著称，是神权王权结合的象征。'},
+  {cat:'文明探源', q:'良渚古城外围发现的大型水利系统被称为？', opts:['世界最早的水利系统之一','大运河前身','都江堰前身','郑国渠'], ans:0, exp:'良渚水利系统由 11 条堤坝构成，距今约 5000 年，是世界最早的大型水利系统之一。'},
+  {cat:'文明探源', q:'二里头遗址位于？', opts:['河南偃师','河南安阳','陕西西安','山西襄汾'], ans:0, exp:'二里头遗址位于河南洛阳偃师二里头村，1959 年发现。'},
+  {cat:'文明探源', q:'二里头遗址发现的“最早的中国”依据不包括？', opts:['宫城与宫殿建筑群','青铜礼器群','井字形道路网','甲骨文字'], ans:3, exp:'二里头有宫城、铸铜作坊、青铜礼器群与道路网，但尚未发现甲骨文；甲骨文属商代。'},
+  {cat:'文明探源', q:'二里头文化被认为是哪一朝代的考古学文化？', opts:['夏代','商代','周代','汉代'], ans:0, exp:'多数学者认为二里头文化主体是夏代晚期文化，是探索夏文化的核心对象。'},
+  {cat:'文明探源', q:'陶寺遗址距今约？', opts:['4300—3900 年','6000 年','3000 年','8000 年'], ans:0, exp:'陶寺遗址距今约 4300—3900 年，属于龙山时代晚期，与尧舜时代大体相当。'},
+  {cat:'文明探源', q:'陶寺遗址出土的重要文物不包括？', opts:['彩绘龙盘','朱书扁壶','铜铃','金缕玉衣'], ans:3, exp:'陶寺出土彩绘龙盘、朱书陶文、铜铃等；金缕玉衣属汉代。'},
+  {cat:'文明探源', q:'陶寺观象台的功能是？', opts:['观测日出定节气','观测星象占卜','祭祀天地','观测日食'], ans:0, exp:'陶寺观象台可观测日出方位以确定节气，是迄今发现最早的天文观测遗迹之一。'},
+  {cat:'文明探源', q:'陶寺遗址朱书陶文被认为是？', opts:['最早的汉字雏形之一','甲骨文','金文','隶书'], ans:0, exp:'陶寺朱书陶文比甲骨文早约七八百年，是探索汉字起源的重要材料。'},
+  {cat:'文明探源', q:'石峁遗址的主体年代是？', opts:['龙山时代晚期至夏代早期','仰韶时代','商代晚期','西周'], ans:0, exp:'石峁城址始建于龙山时代晚期，延续至夏代早期，距今约 4300—3800 年。'},
+  {cat:'文明探源', q:'石峁遗址最突出的文化特色是？', opts:['石砌城防与石雕','彩陶','玉琮','青铜礼器'], ans:0, exp:'石峁以巨型石砌城址、壁画、石雕人面像著称，是北方早期国家的代表。'},
+  {cat:'文明探源', q:'石峁遗址出土的“藏玉于墙”现象说明？', opts:['玉器具有神圣宗教意义','玉器是建筑材料','城墙装饰','贸易交换'], ans:0, exp:'石峁城墙墙体中埋藏玉器，体现玉的神圣性与王权象征意义。'},
+  {cat:'文明探源', q:'殷墟位于？', opts:['河南安阳','河南洛阳','陕西宝鸡','山西侯马'], ans:0, exp:'殷墟是商代晚期都城遗址，位于安阳洹河两岸，甲骨文出土地。'},
+  {cat:'文明探源', q:'殷墟于哪一年列入世界遗产？', opts:['2006 年','2001 年','2010 年','1999 年'], ans:0, exp:'2006 年殷墟列入世界遗产名录，是中华文明探源的重要实证。'},
+  {cat:'文明探源', q:'殷墟出土的青铜重器是？', opts:['后母戊鼎（司母戊鼎）','四羊方尊','毛公鼎','越王勾践剑'], ans:0, exp:'后母戊鼎重 832.84 千克，是现存最大的商代青铜器；四羊方尊、毛公鼎亦为商周重器。'},
+  {cat:'文明探源', q:'甲骨文主要记录在哪种材料上？', opts:['龟甲兽骨','青铜','竹简','丝绸'], ans:0, exp:'甲骨文刻于龟甲兽骨，是商代占卜记事文字，已发现约四千五百个单字。'},
+  {cat:'文明探源', q:'三星堆遗址位于？', opts:['四川广汉','四川成都','陕西宝鸡','湖北随州'], ans:0, exp:'三星堆遗址位于四川广汉，是古蜀文明中心，出土青铜神树、纵目面具等。'},
+  {cat:'文明探源', q:'三星堆遗址代表的文化是？', opts:['古蜀文明','良渚文明','河姆渡文明','红山文明'], ans:0, exp:'三星堆以奇特青铜造像与金面具著称，实证古蜀文明的辉煌。'},
+  {cat:'文明探源', q:'金沙遗址位于？', opts:['四川成都','四川广汉','重庆','云南昆明'], ans:0, exp:'金沙遗址位于成都市区，出土太阳神鸟金饰，是继三星堆后的古蜀文化中心。'},
+  {cat:'文明探源', q:'中国文化遗产标志“太阳神鸟”出自？', opts:['金沙遗址','三星堆','良渚','殷墟'], ans:0, exp:'太阳神鸟金饰出土于金沙遗址，2005 年成为中国文化遗产标志。'},
+  {cat:'文明探源', q:'仰韶文化因何得名？', opts:['河南渑池仰韶村遗址','韶山','韶关','韶州'], ans:0, exp:'1921 年瑞典学者安特生发掘河南渑池仰韶村，仰韶文化由此得名。'},
+  {cat:'文明探源', q:'仰韶文化的典型陶器是？', opts:['彩陶','黑陶','白陶','印纹陶'], ans:0, exp:'仰韶文化以红陶彩绘著称，故又称“彩陶文化”。'},
+  {cat:'文明探源', q:'仰韶文化中晚期（约 5000 年前）的聚落形态是？', opts:['大型环壕聚落','城市','集市','村落联盟'], ans:0, exp:'仰韶中晚期出现大型环壕聚落与中心聚落，如灵宝北阳平、巩义双槐树。'},
+  {cat:'文明探源', q:'河南巩义双槐树遗址被称为？', opts:['河洛古国','最早中国','中原第一城','黄帝故里'], ans:0, exp:'双槐树遗址距今约 5300 年，有大型夯土建筑与三重环壕，被称为“河洛古国”。'},
+  {cat:'文明探源', q:'红山文化位于？', opts:['辽河流域','黄河流域','长江流域','珠江流域'], ans:0, exp:'红山文化分布于西辽河流域，以玉猪龙、C 形龙著称，是中华文明源头之一。'},
+  {cat:'文明探源', q:'红山文化的标志性玉器是？', opts:['玉龙（玉猪龙）','玉琮','玉璧','玉戈'], ans:0, exp:'红山文化玉龙形态独特，被誉为“中华第一龙”。'},
+  {cat:'文明探源', q:'牛河梁遗址属于哪支考古学文化？', opts:['红山文化','仰韶文化','大汶口文化','龙山文化'], ans:0, exp:'牛河梁遗址是红山文化晚期中心，发现女神庙、积石冢与祭坛。'},
+  {cat:'文明探源', q:'大汶口文化位于？', opts:['黄河下游','黄河中游','长江中游','珠江流域'], ans:0, exp:'大汶口文化分布于山东及苏皖北部，以陶器、象牙雕刻著称。'},
+  {cat:'文明探源', q:'龙山文化的标志性陶器是？', opts:['蛋壳黑陶','彩陶','白陶','灰陶'], ans:0, exp:'龙山文化以轮制黑陶为主，蛋壳黑陶薄如蛋壳，故又称“黑陶文化”。'},
+  {cat:'文明探源', q:'城子崖遗址属于哪支文化？', opts:['龙山文化','仰韶文化','河姆渡文化','良渚文化'], ans:0, exp:'城子崖遗址位于山东章丘，是龙山文化命名地，发现早期城址。'},
+  {cat:'文明探源', q:'河姆渡遗址出土的农业遗存表明当时已种植？', opts:['水稻','粟','小麦','玉米'], ans:0, exp:'河姆渡遗址发现大量炭化稻谷，证明长江流域是世界上最早种植水稻的地区之一。'},
+  {cat:'文明探源', q:'半坡遗址出土的典型器物是？', opts:['人面鱼纹彩陶盆','司母戊鼎','玉琮','黑陶杯'], ans:0, exp:'半坡遗址出土人面鱼纹彩陶盆，是仰韶文化彩陶代表作。'},
+  {cat:'文明探源', q:'距今约 8000 年、发现最早的栽培粟的遗址是？', opts:['河北磁山遗址','河南裴李岗遗址','陕西半坡','浙江河姆渡'], ans:0, exp:'河北武安磁山遗址发现炭化粟，是迄今发现最早的粟作农业证据之一。'},
+  {cat:'文明探源', q:'贾湖遗址的考古发现不包括？', opts:['骨笛','稻作农业','刻画符号','青铜器'], ans:3, exp:'河南舞阳贾湖遗址距今约 9000 年，出土骨笛与刻画符号，未见青铜器。'},
+  {cat:'文明探源', q:'贾湖骨笛的发现证明？', opts:['中国音乐史可上溯至八千年前','青铜冶炼成熟','文字系统成熟','城市出现'], ans:0, exp:'贾湖骨笛可吹奏七声音阶，把中国音乐史提前到距今约 8000 年。'},
+  {cat:'文明探源', q:'中华文明起源的“满天星斗”说由哪位学者提出？', opts:['苏秉琦','夏鼐','李济','梁思永'], ans:0, exp:'考古学家苏秉琦提出中华文明起源“满天星斗”说，强调多元起源。'},
+  {cat:'文明探源', q:'中华文明起源“多元一体”中“一体”指？', opts:['中原地区为核心凝聚成一体','全国统一为一种文化','单一民族','单一语言'], ans:0, exp:'各区域文明多元发展，最终以中原为核心汇聚融合，形成中华文明共同体。'},
+  {cat:'文明探源', q:'“夏商周断代工程”确定了夏代始年约为？', opts:['公元前 2070 年','公元前 2500 年','公元前 1600 年','公元前 3000 年'], ans:0, exp:'断代工程将夏代始年推定在约公元前 2070 年。'},
+  {cat:'文明探源', q:'《史记》载“夏本纪”中夏朝的建立者是？', opts:['禹','启','桀','汤'], ans:0, exp:'禹传位其子启，家天下由此开始，夏朝建立（一说启建立）。'},
+  {cat:'文明探源', q:'“大禹治水”传说中的大禹治水范围主要在？', opts:['黄河流域','长江流域','珠江流域','松花江流域'], ans:0, exp:'大禹治水传说以黄河流域为中心，其“疏导”之法影响深远。'},
+  {cat:'文明探源', q:'山西陶寺遗址被认为与文献中哪位帝王对应？', opts:['尧','舜','禹','黄帝'], ans:0, exp:'陶寺遗址与“尧都平阳”（今临汾）的记载相合，多数学者认为即尧都。'},
+  {cat:'文明探源', q:'黄帝陵位于？', opts:['陕西黄陵','河南新郑','山西运城','湖南株洲'], ans:0, exp:'黄帝陵在陕西黄陵县桥山，是中华民族祭祖圣地，称“天下第一陵”。'},
+  {cat:'文明探源', q:'“炎黄子孙”中的“炎黄”指？', opts:['炎帝与黄帝','炎帝与神农','黄帝与蚩尤','黄帝与颛顼'], ans:0, exp:'炎黄指炎帝（神农氏）与黄帝（轩辕氏），是中华民族共同始祖。'},
+  {cat:'文明探源', q:'传说中“三皇五帝”中“五帝”不包括？', opts:['黄帝','颛顼','帝喾','大禹'], ans:3, exp:'五帝多说为黄帝、颛顼、帝喾、尧、舜；大禹属夏朝奠基者。'},
+  {cat:'文明探源', q:'“禅让制”传说中尧传位于？', opts:['舜','禹','启','汤'], ans:0, exp:'尧年老时禅位于有德行的舜，舜又禅位于禹，史称禅让。'},
+  {cat:'文明探源', q:'“夸父逐日”“精卫填海”出自？', opts:['《山海经》','《尚书》','《诗经》','《周易》'], ans:0, exp:'《山海经》保存大量远古神话，是研究上古文明的重要文献。'},
+  {cat:'文明探源', q:'《山海经》是一部？', opts:['上古地理神话著作','编年史','法典','农书'], ans:0, exp:'《山海经》记载上古山川、物产、神话与民族，具有多元史料价值。'},
+  {cat:'文明探源', q:'中国最早的成熟青铜器铸造技术出现于？', opts:['夏代','商代','周代','新石器时代晚期'], ans:0, exp:'夏代已能铸造青铜爵等礼器，二里头发现青铜冶铸作坊。'},
+  {cat:'文明探源', q:'“青铜时代”在中国大致对应？', opts:['夏商周时期','秦汉时期','隋唐时期','宋元时期'], ans:0, exp:'夏商周是中国的青铜时代，青铜礼乐器与兵器高度发达。'},
+  {cat:'文明探源', q:'毛公鼎以什么著称？', opts:['铭文最长','体积最大','铸造最早','纹饰最美'], ans:0, exp:'毛公鼎铭文 499 字，是现存铭文最长的青铜器。'},
+  {cat:'文明探源', q:'越王勾践剑出土于？', opts:['湖北江陵','河南安阳','陕西西安','山西侯马'], ans:0, exp:'1965 年越王勾践剑出土于湖北江陵望山一号楚墓，保存完好锋利如新。'},
+  {cat:'文明探源', q:'中国最早的“紫禁城”式宫城出现在？', opts:['二里头遗址','殷墟','周原','良渚'], ans:0, exp:'二里头宫城是中国最早的宫城，开中国古代都城营建制度先河。'},
+  {cat:'文明探源', q:'“最早的城市主干道网”发现于？', opts:['二里头遗址','殷墟','石峁','陶寺'], ans:0, exp:'二里头遗址发现井字形道路网，是迄今最早的城市主干道网。'},
+  {cat:'文明探源', q:'中国最早的甲骨文发现于？', opts:['殷墟','二里头','陶寺','良渚'], ans:0, exp:'甲骨文出土于殷墟，是商代晚期文字，我国已发现最早的成体系文字。'},
+  {cat:'文明探源', q:'“中华文明探源工程”的重要成果是？', opts:['实证中华文明五千多年历史','发现人类起源','完成夏商周断代','统一文字'], ans:0, exp:'探源工程以考古实证中华文明五千多年历史，深化对文明起源的认识。'},
+  {cat:'文明探源', q:'二里头遗址出土的绿松石龙形器属于？', opts:['镶嵌绿松石的龙形器','玉璧','青铜面具','陶塑'], ans:0, exp:'二里头绿松石龙形器由两千余片绿松石拼嵌而成，被称为“中国龙”。'},
+  {cat:'文明探源', q:'良渚古城遗址城墙结构特点是？', opts:['土筑城墙','石砌城墙','砖砌城墙','夯土版筑'], ans:0, exp:'良渚城墙以堆筑土墙为主，外围环壕，规模宏大。'},
+  {cat:'文明探源', q:'陶寺遗址出土的“圭表”用于？', opts:['测日影定节气','测地震','测风向','测水位'], ans:0, exp:'陶寺圭表用于立竿测影，是早期天文学成就的实证。'},
+  {cat:'文明探源', q:'中华文明探源工程认为中华文明形成的关键阶段是？', opts:['距今 5300—4000 年','距今 1 万年','距今 3000 年','距今 2000 年'], ans:0, exp:'距今 5300—4000 年间，各地区文明相继形成并走向一体，是文明形成关键期。'},
+  {cat:'文明探源', q:'“中国”一词最早见于？', opts:['西周青铜器何尊铭文','《史记》','《诗经》','甲骨文'], ans:0, exp:'1963 年出土的何尊铭文“宅兹中国”，是“中国”一词最早的文字记载。'},
+  {cat:'文明探源', q:'何尊铭文中“宅兹中国”记载的是？', opts:['周成王营建成周','武王伐纣','周公东征','昭王南征'], ans:0, exp:'何尊铭文记周成王迁宅成周（洛邑），“宅兹中国”即定都天下之中。'},
+  {cat:'文明探源', q:'周原遗址位于？', opts:['陕西宝鸡','河南洛阳','陕西西安','山西太原'], ans:0, exp:'周原是周人故都所在地，位于陕西宝鸡岐山、扶风一带，出土大量青铜器。'},
+  {cat:'文明探源', q:'三星堆青铜大立人像的用途被认为与什么有关？', opts:['祭祀','战争','农耕','商业'], ans:0, exp:'青铜大立人像作祭祀状，反映古蜀国浓厚的宗教祭祀传统。'},
+  {cat:'文明探源', q:'大溪文化、屈家岭文化、石家河文化分布于？', opts:['长江中游','黄河中游','辽河流域','珠江流域'], ans:0, exp:'长江中游先后有城头山、石家河等古城，是中华文明起源重要一元。'},
+  {cat:'文明探源', q:'湖南澧县城头山遗址的重要发现是？', opts:['最早的水稻田','最早的文字','最早的青铜','最早的丝绸'], ans:0, exp:'城头山遗址发现距今约 6000 年的水稻田，是已知最早的水稻田遗址。'},
+  {cat:'文明探源', q:'马家窑文化以什么著称？', opts:['彩陶','黑陶','白陶','印纹陶'], ans:0, exp:'马家窑文化彩陶纹样繁丽，是黄河上游彩陶文化的巅峰。'},
+  {cat:'文明探源', q:'齐家文化位于？', opts:['甘青地区','中原地区','东北地区','东南沿海'], ans:0, exp:'齐家文化分布于甘肃青海一带，以玉器与早期铜器著称。'},
+  {cat:'文明探源', q:'良渚古城遗址的发现时间（开始考古发掘）是？', opts:['1936 年','1959 年','1986 年','2007 年'], ans:0, exp:'1936 年施昕更发现良渚遗址；2007 年确认良渚古城；2019 年申遗成功。'},
+  {cat:'文明探源', q:'“中华第一城”指的是？', opts:['良渚古城','二里头','殷墟','石峁'], ans:0, exp:'良渚古城被誉为“中华第一城”，是实证中华五千年文明史的标志性遗址。'},
+  {cat:'文明探源', q:'考古学上“文明探源”的“探源”是指？', opts:['探索中华文明起源','寻找人类起源','探测地下矿藏','探索夏朝疆域'], ans:0, exp:'探源工程旨在探索中华文明起源、形成与早期发展的历史脉络。'},
+  {cat:'文明探源', q:'中华文明探源工程将中华文明起源研究追溯到？', opts:['新石器时代晚期','旧石器时代','商代','汉代'], ans:0, exp:'探源工程从新石器时代晚期（距今 6000 年）开始系统研究文明起源。'},
+  {cat:'文明探源', q:'“良渚遗址群”入选世界遗产的完整名称是？', opts:['良渚古城遗址','良渚文化村','良渚博物院','良渚水坝'], ans:0, exp:'世界遗产名称为“良渚古城遗址”，包括城址、外围水利系统与瑶山等祭坛墓地。'},
+  {cat:'文明探源', q:'二里头遗址博物馆位于？', opts:['河南偃师','河南安阳','陕西西安','山西临汾'], ans:0, exp:'二里头夏都遗址博物馆 2019 年开放，坐落于偃师二里头遗址旁。'},
+  {cat:'文明探源', q:'陶寺遗址博物馆开馆于？', opts:['2024 年','2020 年','2022 年','2023 年'], ans:0, exp:'2024 年 11 月陶寺遗址博物馆开馆，系统展示尧都平阳考古成果。'},
+  {cat:'文明探源', q:'山西是中华文明探源工程的重要省份，其关键遗址不包括？', opts:['陶寺遗址','西侯度遗址','丁村遗址','良渚遗址'], ans:3, exp:'良渚遗址在浙江；山西关键遗址为陶寺、西侯度、丁村、沁水下川等。'},
+  {cat:'文明探源', q:'山西吉县柿子滩遗址属于？', opts:['旧石器时代','新石器时代','青铜时代','铁器时代'], ans:0, exp:'柿子滩遗址是旧石器时代晚期遗址，发现岩画与细石器。'},
+  {cat:'文明探源', q:'山西沁水县下川遗址出土的细石器距今约？', opts:['2 万年前','1 万年前','5 万年前','5000 年前'], ans:0, exp:'下川遗址距今约 2.3—1.6 万年，细石器技术先进，是旧石器向新石器过渡代表。'},
+  {cat:'文明探源', q:'山西晋城高都遗址、长治小神遗址属于？', opts:['新石器时代遗址','旧石器时代','商周遗址','汉唐遗址'], ans:0, exp:'高都、小神等遗址属新石器时代，反映山西新石器文化发展序列。'},
+  {cat:'文明探源', q:'“中华文明探源工程”由哪个部门组织实施？', opts:['国家文物局等部委','教育部','文化部','中科院'], ans:0, exp:'探源工程由国家科技部立项、国家文物局等部门组织实施，多学科联合攻关。'},
+  {cat:'文明探源', q:'中国最早的“礼制”萌芽于？', opts:['新石器时代晚期','商代','周代','汉代'], ans:0, exp:'良渚玉礼器、陶寺礼器等表明，新石器时代晚期已出现礼制萌芽。'},
+  {cat:'文明探源', q:'中华文明探源工程最终形成的共识是？', opts:['中华文明五千年并非虚言','中华文明源自西方','中华文明仅三千年','中华文明起源于商代'], ans:0, exp:'探源工程以考古实证中华文明五千多年的历史，驳斥“文明西来说”。'},
+  {cat:'文明探源', q:'被誉为“华夏第一龙”的红山玉龙出土于？', opts:['内蒙古翁牛特旗','辽宁凌源','河北围场','吉林农安'], ans:0, exp:'1971 年内蒙古翁牛特旗出土的红山 C 形碧玉龙，被誉为“华夏第一龙”。'},
+  {cat:'文明探源', q:'良渚反山王陵出土的“琮王”重约？', opts:['6.5 千克','1 千克','20 千克','50 克'], ans:0, exp:'反山 12 号墓出土玉琮王重约 6.5 千克，是良渚玉器之最。'},
+  {cat:'文明探源', q:'三星堆祭祀坑新一轮发掘在？', opts:['2020—2022 年','2010 年','2015 年','2024 年'], ans:0, exp:'2020—2022 年三星堆新发现 6 个祭祀坑，出土金面具、青铜神坛等万余件文物。'},
+  {cat:'文明探源', q:'中华文明探源工程的重要结论是中华文明的突出特性包括？', opts:['连续性、创新性、统一性、包容性、和平性','排他性','封闭性','单一性'], ans:0, exp:'中华文明具有突出的连续性、创新性、统一性、包容性、和平性。'},
+  {cat:'文明探源', q:'甲骨文中已出现较完整的？', opts:['象形文字系统','拼音文字','字母文字','楔形文字'], ans:0, exp:'甲骨文是成熟的象形表意文字系统，已具备“六书”构字法。'},
+  {cat:'文明探源', q:'中华文明探源工程的研究表明，中华文明形成于距今约多少年？', opts:['三千年前','四千年前','五千多年前','一万年前'], ans:2, exp:'探源工程实证中华文明五千年历史，于距今 5300 年前后进入文明起源加速阶段。'},
+  {cat:'文明探源', q:'实证中华五千多年文明史的良渚古城遗址位于？', opts:['浙江余杭（杭州）','江苏南京','安徽凌家滩','河南偃师'], ans:0, exp:'良渚古城遗址位于浙江杭州余杭，2019 年列入世界遗产，出土大量玉礼器、水利系统。'},
+  {cat:'文明探源', q:'被学界多认为是“最早的中国”、可能为夏朝中晚期都邑的遗址是？', opts:['良渚遗址','二里头遗址','石峁遗址','半坡遗址'], ans:1, exp:'二里头遗址位于河南洛阳偃师，发现有宫城、青铜礼器群等，被普遍视为夏代中晚期都城。'},
+  {cat:'文明探源', q:'考古学界提出“尧都平阳”假说、与尧舜时代联系密切的遗址是？', opts:['山西襄汾陶寺遗址','陕西神木石峁遗址','山东城子崖遗址','湖北石家河遗址'], ans:0, exp:'陶寺遗址位于山西襄汾，发现大型城址、观象台与朱书文字，与文献中“尧都平阳”（今临汾一带）关系密切。'},
+  {cat:'文明探源', q:'位于陕西神木、距今约 4000 年的新石器时代晚期超大型石城遗址是？', opts:['石峁遗址','半坡遗址','姜寨遗址','大汶口遗址'], ans:0, exp:'石峁遗址为目前中国所见规模最大的史前城址，城墙用石块砌筑，属陕北高原龙山文化晚期。'},
+  {cat:'文明探源', q:'我国境内目前已确认的最早古人类之一、距今约 170 万年的是？', opts:['北京人','元谋人','山顶洞人','蓝田人'], ans:1, exp:'元谋人发现于云南元谋，距今约 170 万年，是我国最早的古人类化石之一。'},
+  {cat:'文明探源', q:'以彩陶著称、粟作农业发达的仰韶文化代表性遗址是？', opts:['河姆渡遗址','半坡遗址','良渚遗址','二里头遗址'], ans:1, exp:'半坡遗址位于陕西西安，属仰韶文化，出土人面鱼纹彩陶盆，以粟作农业为主。'},
+  {cat:'文明探源', q:'以稻作农业与干栏式建筑著称、位于浙江余姚的新石器遗址是？', opts:['半坡遗址','河姆渡遗址','大溪遗址','马家窑遗址'], ans:1, exp:'河姆渡遗址距今约 7000 年，发现大量炭化稻谷与干栏式建筑，是长江流域稻作农业的代表。'},
+  {cat:'文明探源', q:'被誉为“天下第一陵”、中华民族始祖黄帝的陵寝位于？', opts:['陕西黄陵县','河南新郑','山西运城','甘肃天水'], ans:0, exp:'黄帝陵位于陕西黄陵县桥山，为历代祭祀黄帝之所，是全国重点文物保护单位。'},
+  {cat:'文明探源', q:'中华文明起源的基本格局被概括为？', opts:['单一起源、直线演进','多元一体、中原核心','西来东渐','欧洲起源论'], ans:1, exp:'考古学表明中华文明“多元一体”，各区域文明如满天星斗，最终汇聚形成以中原为核心的文明格局。'}
+];
+
+/* ============ 状态 ============ */
+var state = {
+  view: "welcome",
+  name: "",
+  sid: "",
+  cls: "",
+  count: 30,
+  order: [],        // 抽题顺序（BANK 下标）
+  answers: {},      // 题号 -> 选项下标
+  cur: 0,
+  total: 0,
+  secondsLeft: 0,
+  totalSeconds: 0,
+  timerId: null,
+  startAt: 0,
+  finished: false,
+  lastResult: null
+};
+
+var $ = function(id){ return document.getElementById(id); };
+
+/* ============ 工具 ============ */
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function fmtTime(sec){
+  sec = Math.max(0, Math.round(sec));
+  var m = Math.floor(sec / 60), s = sec % 60;
+  return m + ":" + (s < 10 ? "0" + s : s);
+}
+
+function toast(msg){
+  var t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._h);
+  t._h = setTimeout(function(){ t.classList.remove("show"); }, 2200);
+}
+
+/* ============ 路由 ============ */
+function showView(v){
+  state.view = v;
+  document.querySelectorAll(".view").forEach(function(el){
+    el.classList.toggle("active", el.id === "view-" + v);
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ============ 欢迎页 ============ */
+function renderWelcome(){
+  document.querySelectorAll(".count-chip").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.querySelectorAll(".count-chip").forEach(function(b){ b.classList.remove("sel"); });
+      btn.classList.add("sel");
+      state.count = parseInt(btn.getAttribute("data-n"), 10);
+    });
+  });
+
+  $("btn-start").addEventListener("click", function(){
+    state.name = $("inp-name").value.trim();
+    state.sid = $("inp-sid").value.trim();
+    state.cls = $("inp-class").value.trim();
+    if(!state.name){ toast("请填写姓名后再开始答题"); $("inp-name").focus(); return; }
+    if(!state.sid){ toast("请填写学号后再开始答题"); $("inp-sid").focus(); return; }
+    if(!state.cls){ toast("请填写系部 / 班级后再开始答题"); $("inp-class").focus(); return; }
+    startQuiz();
+  });
+
+  renderHistory();
+}
+
+function renderHistory(){
+  var list;
+  try { list = JSON.parse(localStorage.getItem("hwq_history") || "[]"); } catch(e){ list = []; }
+  var block = $("history-block"), box = $("history-list");
+  if(!list.length){ block.style.display = "none"; return; }
+  block.style.display = "block";
+  box.innerHTML = "";
+  list.slice(0, 8).forEach(function(h){
+    var d = document.createElement("div");
+    d.className = "h-item";
+    d.innerHTML = "<b>" + h.ratio + " 分</b><div class='h-info'>" +
+      esc(h.name || "匿名") + " · " + esc(h.sid || "-") + (h.cls ? " · " + esc(h.cls) : "") +
+      "<small>" + h.score + " / " + h.total + " 题 · 用时 " + h.time + " · " + h.date + "</small></div>";
+    box.appendChild(d);
+  });
+}
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+  });
+}
+
+/* ============ 开始答题 ============ */
+function isLocked(name, sid){
+  var list;
+  try { list = JSON.parse(localStorage.getItem("hwq_history") || "[]"); } catch(e){ list = []; }
+  return list.some(function(h){ return h.name === name && h.sid === sid; });
+}
+
+function startQuiz(){
+  if(isLocked(state.name, state.sid)){
+    toast("该学号已完成答题，每人仅限作答一次");
+    return;
+  }
+  var n = Math.min(state.count, BANK.length);
+  state.order = shuffle(BANK.map(function(_, i){ return i; })).slice(0, n);
+  state.answers = {};
+  state.cur = 0;
+  state.total = n;
+  state.finished = false;
+  state.totalSeconds = n * 60;          // 每题 1 分钟
+  state.secondsLeft = state.totalSeconds;
+  state.startAt = Date.now();
+
+  showView("quiz");
+  renderQuiz();
+  clearInterval(state.timerId);
+  state.timerId = setInterval(tick, 1000);
+}
+
+function tick(){
+  if(state.finished) return;
+  state.secondsLeft--;
+  if(state.secondsLeft <= 0){
+    state.secondsLeft = 0;
+    clearInterval(state.timerId);
+    toast("时间到，系统已自动交卷");
+    setTimeout(finishQuiz, 600);
+  }
+  updateTimer();
+}
+
+function updateTimer(){
+  var el = $("timer");
+  el.textContent = fmtTime(state.secondsLeft);
+  el.classList.toggle("warn", state.secondsLeft <= 60);
+}
+
+function getQ(i){
+  return BANK[state.order[i]];
+}
+
+/* ============ 答题页渲染 ============ */
+function renderQuiz(){
+  var i = state.cur;
+  var q = getQ(i);
+  $("q-cat").textContent = q.cat;
+  $("q-no").textContent = "第 " + (i + 1) + " / " + state.total + " 题";
+  $("q-stem").textContent = q.q;
+
+  var optBox = $("opts");
+  optBox.innerHTML = "";
+  var keys = ["A","B","C","D"];
+  q.opts.forEach(function(op, oi){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "opt" + (state.answers[i] === oi ? " sel" : "");
+    b.innerHTML = "<span class='key'>" + keys[oi] + "</span><span>" + esc(op) + "</span>";
+    b.addEventListener("click", function(){
+      state.answers[i] = oi;
+      renderQuiz();
+      renderGrid();
+    });
+    optBox.appendChild(b);
+  });
+
+  var doneCount = answeredCount();
+  $("progress-fill").style.width = Math.round(doneCount / state.total * 100) + "%";
+  renderGrid();
+  updateTimer();
+
+  $("btn-prev").disabled = (i === 0);
+  $("btn-next").style.display = (i === state.total - 1) ? "none" : "flex";
+  $("btn-next").textContent = "下一题";
+  $("btn-submit").style.display = (i === state.total - 1) ? "flex" : "none";
+}
+
+function answeredCount(){
+  return Object.keys(state.answers).length;
+}
+
+function renderGrid(){
+  var box = $("grid-nav");
+  box.innerHTML = "";
+  for(var i = 0; i < state.total; i++){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "gcell" +
+      (state.answers[i] !== undefined ? " done" : "") +
+      (i === state.cur ? " cur" : "");
+    b.textContent = i + 1;
+    b.addEventListener("click", function(idx){ return function(){ state.cur = idx; renderQuiz(); }; }(i));
+    box.appendChild(b);
+  }
+  // 当前题号滚入视野（手动计算横向滚动位置）
+  var cells = box.children;
+  if(cells[state.cur]){
+    var cell = cells[state.cur];
+    var boxRect = box.getBoundingClientRect();
+    var cellRect = cell.getBoundingClientRect();
+    box.scrollLeft += (cellRect.left - boxRect.left) - (box.clientWidth / 2) + (cellRect.width / 2);
+  }
+}
+
+/* ============ 导航按钮 ============ */
+$("btn-prev").addEventListener("click", function(){
+  if(state.cur > 0){ state.cur--; renderQuiz(); }
+});
+
+$("btn-next").addEventListener("click", function(){
+  if(state.cur < state.total - 1){ state.cur++; renderQuiz(); }
+  else { openSubmit(); }
+});
+
+$("btn-submit").addEventListener("click", openSubmit);
+
+function openSubmit(){
+  var done = answeredCount(), left = state.total - done;
+  $("submit-stat").textContent = "你已作答 " + done + " 题，未作答 " + left + " 题。交卷后将立即出分。";
+  $("submit-mask").classList.add("open");
+}
+
+$("btn-cancel-submit").addEventListener("click", function(){
+  $("submit-mask").classList.remove("open");
+});
+
+$("btn-confirm-submit").addEventListener("click", function(){
+  $("submit-mask").classList.remove("open");
+  finishQuiz();
+});
+
+/* ============ 交卷 & 结果 ============ */
+function finishQuiz(){
+  if(state.finished) return;
+  state.finished = true;
+  clearInterval(state.timerId);
+  var used = Math.round((Date.now() - state.startAt) / 1000);
+
+  var correct = 0, wrong = 0;
+  var detail = [];
+  for(var i = 0; i < state.total; i++){
+    var q = getQ(i);
+    var given = state.answers[i];
+    var ok = (given === q.ans);
+    if(ok) correct++; else wrong++;
+    detail.push({q:q, given:given, ok:ok});
+  }
+  var ratio = Math.round(correct / state.total * 100);
+
+  state.lastResult = {
+    name: state.name,
+    sid: state.sid,
+    cls: state.cls,
+    score: correct,
+    total: state.total,
+    ratio: ratio,
+    time: fmtTime(used),
+    date: new Date().toLocaleDateString("zh-CN")
+  };
+
+  renderResult(state.lastResult, detail);
+  saveHistory(state.lastResult);
+  showView("result");
+}
+
+function rankOf(ratio){
+  if(ratio >= 90) return {text:"优 秀", cls:"rank-excellent"};
+  if(ratio >= 75) return {text:"良 好", cls:"rank-good"};
+  if(ratio >= 60) return {text:"及 格", cls:"rank-pass"};
+  return {text:"再 接 再 厉", cls:"rank-fail"};
+}
+
+function renderResult(r, detail){
+  var person = $("res-person");
+  person.innerHTML = "";
+  [["姓名", r.name], ["学号", r.sid], ["班级", r.cls]].forEach(function(pair){
+    var chip = document.createElement("span");
+    chip.className = "chip";
+    chip.innerHTML = pair[0] + "：<b>" + esc(pair[1] || "-") + "</b>";
+    person.appendChild(chip);
+  });
+  $("res-score").innerHTML = r.ratio + "<em>分</em>";
+  $("res-ratio").textContent = "正确率 " + r.ratio + "%（" + r.score + " / " + r.total + " 题）";
+  var rank = rankOf(r.ratio);
+  var rankEl = $("res-rank");
+  rankEl.textContent = rank.text;
+  rankEl.className = "result-rank " + rank.cls;
+  $("res-correct").textContent = r.score;
+  $("res-wrong").textContent = detail.length - r.score;
+  $("res-time").textContent = r.time;
+
+  var list = $("review-list");
+  list.innerHTML = "";
+  var keys = ["A","B","C","D"];
+  detail.forEach(function(d, i){
+    var item = document.createElement("div");
+    item.className = "r-item";
+    var givenTxt = d.given === undefined ? "未作答" : keys[d.given] + ". " + d.q.opts[d.given];
+    var rightTxt = keys[d.q.ans] + ". " + d.q.opts[d.q.ans];
+    item.innerHTML =
+      "<div class='r-head'><span>第 " + (i + 1) + " 题 · " + esc(d.q.cat) + "</span>" +
+      "<span>" + (d.ok ? "答对" : "答错") + "</span></div>" +
+      "<p class='r-q'>" + esc(d.q.q) + "</p>" +
+      "<p class='r-line " + (d.ok ? "r-right" : "r-wrong") + "'><span class='tag'>你的答案</span>" + esc(givenTxt) + "</p>" +
+      (!d.ok ? "<p class='r-line r-right'><span class='tag'>正确答案</span>" + esc(rightTxt) + "</p>" : "") +
+      "<p class='r-exp'>" + esc(d.q.exp) + "</p>";
+    list.appendChild(item);
+  });
+}
+
+function saveHistory(r){
+  var list;
+  try { list = JSON.parse(localStorage.getItem("hwq_history") || "[]"); } catch(e){ list = []; }
+  list.unshift({name:r.name, sid:r.sid, cls:r.cls, score:r.score, total:r.total, ratio:r.ratio, time:r.time, date:r.date});
+  if(list.length > 50) list = list.slice(0, 50);
+  try { localStorage.setItem("hwq_history", JSON.stringify(list)); } catch(e){}
+}
+
+/* ============ 结果页按钮 ============ */
+$("btn-home").addEventListener("click", function(){
+  showView("welcome");
+  renderHistory();
+});
+
+/* ============ 初始化 ============ */
+renderWelcome();
+showView("welcome");
+</script>
+</body>
+</html>
